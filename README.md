@@ -1,48 +1,30 @@
 
-![Motus logo](motus_logo_small.png)
+![Motus logo](src/data/images/motus_logo_small.png)
 
 # Motus #
-
----
-  
 A python desktop application for creating workouts and week workout plans.
 
-## Table of contents  
-
----
+## Table of contents
 * [Images](#images)
 * [Features](#features)
 * [Requirements](#requirements)
 * [TODO](#todo)
 
-
 ## Images
-
----
-![screenshot_exercises.png](src/data/images/screenshot_exercises.png)
-<br/>
+![screenshot_exercises.png](src/data/images/screenshot_exercises.png) <br/>
 <i>Tab exercises</i>
 
-
-
-![screenshot_planner.png](src/data/images/screenshot_planner.png)
-<br/>
+![screenshot_planner.png](src/data/images/screenshot_planner.png) <br/>
 <i>Tab planner</i>
 
-![screenshot_workouts.png](src/data/images/screenshot_workouts.png)
-<br/>
+![screenshot_workouts.png](src/data/images/screenshot_workouts.png) <br/>
 <i>Tab workouts</i>
 
-<br/>
-
-![screenshot_plans.png](src/data/images/screenshot_plans.png)
-<br/>
+![screenshot_plans.png](src/data/images/screenshot_plans.png) <br/>
 <i>Tab Plans</i>
 
 
 ## Features
-
----
 * Exercise library with over 800 exercises. New exercises can be added, edited and deleted.
  
 * Planner tables pane(7 tables for each day of the week) for creating week plans or workouts
@@ -54,9 +36,6 @@ A python desktop application for creating workouts and week workout plans.
 
 
 ## Requirements
-
----
-
 The following software and libraries are required to run Motus:
 * Windows 10
 * Python 3.9 or never
@@ -69,8 +48,6 @@ The following software and libraries are required to run Motus:
 * pytest-qt 4.0.2(only if you want to run tests)
 
 ## TODO
-
----
 * Add new plans and workouts
 * Add documentation
 * Add more tests
