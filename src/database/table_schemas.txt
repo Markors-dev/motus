@@ -1,0 +1,171 @@
+### Info - All tables ###
+[('muscle_group_old',),
+ ('equipment',),
+ ('exercise_type',),
+ ('exercises_orig',),
+ ('body_part',),
+ ('muscle_group',),
+ ('sqlite_sequence',),
+ ('plan_type',),
+ ('week_plan',),
+ ('exercises',),
+ ('exercises_backup',)]
+
+
+### Table "exercises" ###
+
+CREATE TABLE "exercises"(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    type_id INTEGER NOT NULL,
+    body_part_id INTEGER NOT NULL,
+    main_muscle_group_id INTEGER NOT NULL,
+    minor_muscle_group_id INTEGER DEFAULT NULL,
+    equipment_id INTEGER NOT NULL,
+    position_1 BLOB NOT NULL,
+    position_2 BLOB DEFAULT NULL,
+    icons_dict BLOB NOT NULL,
+    instructions TEXT NOT NULL,
+    favorite INTEGER DEFAULT 0,
+    link TEXT DEFAULT NULL,
+    user_permission INTEGER DEFAULT 0,
+    FOREIGN KEY (type_id) REFERENCES exercise_type(id),
+    FOREIGN KEY (body_part_id) REFERENCES body_part(id),
+    FOREIGN KEY (main_muscle_group_id) REFERENCES muscle_group(id),
+    FOREIGN KEY (minor_muscle_group_id) REFERENCES muscle_group(id),
+    FOREIGN KEY (equipment_id) REFERENCES equipment(id)
+)
+
+
+### Table "exercises" ###
+
+CREATE TABLE exercises_backup(
+    # same as exercises
+)
+
+
+TABLE exercise_type:
+    id INTEGER PRIMARY KEY,
+    type TEXT NOT NULL
+# ALL VALUES #
+(1, 'Strength'),
+(2, 'Stretching'),
+(3, 'Cardio'),
+(4, 'Plyometrics'),
+(5, 'Powerlifting'),
+(6, 'Olympic Weightlifting'),
+(7, 'Strongman')
+###
+
+TABLE muscle_group:
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    image BLOB NOT NULL
+### 
+(1,  Chest)
+(2, Quads)
+(3, Hamstrings)
+(4, Lats)
+(5, Lower Back)
+(6, Biceps)
+(7, Triceps)
+(8, Traps)
+(9, Upper abbs)
+(10, Lower abbs)
+(11, Calves)
+(12, Obliques)
+(13, Glutes)
+(14, Abductors)
+(15, Adductors)
+(16, Forearms)
+(17, Neck)
+(18, Front deltoid)
+(19, Middle deltoid)
+(20, Rear deltoid)
+(21, Lower back - Hamstrings)
+(22, Upper-lower abbs)
+(23, Front-middle deltoid)
+(24, Glutes - Hamstrings)
+(25, 'Quads - Front deltoid')
+(26, Lats - Traps)
+(27, Quads - Abductors)
+(28, Lower back - Traps)
+(29, Quads - Adductors)
+(30, Adductors - Abductors)
+
+TABLE equipment:
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+###
+(1, 'Barbell'),
+(2, 'Dumbell'),
+(3, 'Body Only'),
+(4, 'Kettlebells'),
+(5, 'Machine'),
+(6, 'Cable'),
+(7, 'Plate'),
+(8, 'Foam Roll'),
+(9, 'Other'),
+(10, 'Bands'),
+(11, 'E-Z Curl Bar'),
+(12, 'Medicine Ball'),
+(13, 'Exercise Ball'),
+(14, 'Bosu Ball'),
+(15, 'Ropes'),
+(16, 'Pull Up Bar'),
+(17, 'TRX/Rings')
+###
+Swapped: 2 -> <- 6, 3 -> <- 12, 5 -> <- 13
+
+TABLE body_part:
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    image BLOB NOT NULL
+#
+(1, 'Chest'),
+(2, 'Back'),
+(3, 'Legs'),
+(4, 'Arms'),
+(5, 'Shoulders'),
+(6, 'Abdominals'),
+(7, 'Hips'),
+(9, 'Neck')
+
+
+### Table "week_plan" ###
+CREATE TABLE week_plan(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    plan_type_id INTEGER NOT NULL,
+    workouts BLOB NOT NULL,
+    user_permission INTEGER DEFAULT 0,
+    FOREIGN KEY (plan_type_id) REFERENCES plan_type(id)
+)
+
+
+### Table "plan_type" ###
+
+CREATE TABLE IF NOT EXISTS plan_type(
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    icon BLOB NOT NULL);
+
+(1, 'bodybuilding'),
+(2, 'calisthenics'),
+(3, 'hiit'),
+(4, 'cardio'),
+(5, 'powerlifting'),
+(6, 'olympic_weightlifting')
+
+
+### Table "workout" ###
+
+CREATE TABLE IF NOT EXISTS workout(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    type_id INT NOT NULL,
+    data BLOB NOT NULL,
+    workout_time INTEGER NOT NULL,
+    user_permission INTEGER DEFAULT 0,
+    FOREIGN KEY (type_id) REFERENCES plan_type(id)
+);

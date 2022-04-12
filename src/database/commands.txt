@@ -1,0 +1,38 @@
+######### Some usefull commands for the python console #########
+################################################################
+
+
+
+stat_join = r'SELECT exercises.id, exercises.name, exercise_type.type, mus1.name, mus2.name ' \
+            r'FROM exercises ' \
+            r'INNER JOIN exercise_type ON exercise_type.id = exercises.type_id ' \
+            r'INNER JOIN muscle_group mus1 ON exercises.main_muscle_group_id = mus1.id ' \
+            r'INNER JOIN muscle_group mus2 ON exercises.minor_muscle_group_id = mus2.id ' \
+            r'WHERE exercises.id=20'
+
+"PRAGMA table_info('exercises')"
+
+1) Get table structure info:
+"SELECT sql FROM sqlite_master WHERE tbl_name = 'exercises' AND type = 'table'"
+
+2) Get all tables in database
+"SELECT name FROM sqlite_master WHERE type='table';"
+
+('exercises',),
+('exercises_old',),
+('exercises_backup',),
+('exercises_orig',),
+('muscle_group_old',),
+('equipment',),
+('exercise_type',),
+('body_part',),
+('muscle_group',),
+('plan_type',),
+('week_plan_old',),
+('week_plan',),
+('workout',),
+('sqlite_sequence',),
+
+
+3) Count rows
+SELECT COUNT(*) FROM table

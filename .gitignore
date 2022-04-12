@@ -1,0 +1,28 @@
+.idea
+sandbox/
+exports/motfiles/*
+exports/pdf/*
+src/data/bookmarks.txt
+src/data/sessions.json
+src/data/settings.json
+test/config/*
+test/exports/motfiles/*
+test/exports/pdf/*
+*.log
+*_backup.db
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Distribution / packaging
+build/
+dist/
+
+
+# Unit test / coverage reports
+.pytest_cache/
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+__pypackages__/
+
+# Environments
+env/

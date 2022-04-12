@@ -1,0 +1,21 @@
+_WorkoutTableEditor {
+    background-color: #aaaaaa;
+    /*alternate-background-color: #E6FFE6;*/
+    border: 0px;
+}
+QHeaderView::section {
+    background-color: #CCFFCC;
+    border: 1px solid #CCFFCC;
+    border-radius: 10px;
+    font-weight: bold;
+}
+_WorkoutTableEditor::item {
+    border-top: 0px solid black;
+
+    /*border-left-color: 3px solid red;
+    border-right-color: #C0C0C0;*/
+}
+_WorkoutTableEditor::item:selected {
+    background-color: #3399FF;
+    color: #FFFFFF;
+}
