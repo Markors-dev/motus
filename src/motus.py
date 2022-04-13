@@ -46,7 +46,6 @@ class App(QtWidgets.QApplication):
 
 
 if __name__ == "__main__":
-    # breakpoint()
     exit_code = ExitCode.RESTART
     while exit_code == ExitCode.RESTART:
         app = App()

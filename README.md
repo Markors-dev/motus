@@ -3,11 +3,14 @@
 
 # Motus #
 A python desktop application for creating workouts and week workout plans.
+<br/><br/>
+Release(v1.0) is available.
 
 ## Table of contents
 * [Images](#images)
 * [Features](#features)
 * [Requirements](#requirements)
+* [License](#license)
 * [TODO](#todo)
 
 ## Images
@@ -26,11 +29,11 @@ A python desktop application for creating workouts and week workout plans.
 
 ## Features
 * Exercise library with over 800 exercises. New exercises can be added, edited and deleted.
- 
 * Planner tables pane(7 tables for each day of the week) for creating week plans or workouts
 * Workout and plan library
 * Exporting workouts and plans to PDF
-* Export/import workouts to file
+* Export workout/plan to a file
+* Import workout/plan from a file
 * Settings for setting: font, start display, icon size, folder paths.
 * Send feedback e-mail to developers 
 
@@ -38,7 +41,7 @@ A python desktop application for creating workouts and week workout plans.
 ## Requirements
 The following software and libraries are required to run Motus:
 * Windows 10
-* Python 3.9 or never
+* Python 3.9 or newer
 * PyQt5 5.15.6
 * reportlab 3.6.9
 * cryptography 36.0.2
@@ -46,6 +49,11 @@ The following software and libraries are required to run Motus:
 * Pillow 9.1.0
 * pytest 7.1.1(only if you want to run tests)
 * pytest-qt 4.0.2(only if you want to run tests)
+
+## License
+Distributed under the GNU Affero General Public License. See LICENSE file for more information.<br/>
+NOTE: Images and data not to be used for commercial purposes.
+    
 
 ## TODO
 * Add new plans and workouts
