@@ -448,8 +448,7 @@ class _FeedbackDialog(BaseDialog):
             align_flag=AlignFlag.VCenter, cont_margins=(20, 0, 0, 0))
         # self.bttn_attach_file = RoundPushButton(self, 'bttn', 'Choose motfile')
         self.bttn_attach_file = DropFileRoundPushButton(
-            self, 'bttn', 'Choose file',
-            ('jpg', 'jpeg', 'png', 'txt', 'motwork', 'motplan', 'pdf'))
+            self, 'bttn', 'Choose file', ('jpg', 'jpeg', 'png'))
         self.label_attached_file = MyLabel(
             self, 'label', '<i>No file choosen</i>', font_flag=FontFlag.SMALL_TEXT,
             align_flag=AlignFlag.VCenter)
@@ -494,7 +493,7 @@ class _FeedbackDialog(BaseDialog):
     def _choose_file(self):
         fp = get_filepath_from_dialog(
             self, title='Choose file from PC',
-            file_types='Files (*.jpg *.jpeg *.png *.txt, *.motwork, *.motplan, *.pdf)')
+            file_types='Files (*.jpg *.jpeg *.png)')
         if fp:
             self.attached_file = fp
             label_filename_text = shorten_text(Path(fp).name, 40)
