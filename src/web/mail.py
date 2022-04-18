@@ -1,6 +1,4 @@
 import json
-import smtplib
-import ssl
 import logging
 import datetime
 import traceback
@@ -9,21 +7,18 @@ import base64
 from os import path
 from enum import Enum
 from pathlib import Path
-from email import encoders
-from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
 from session import Session
-from gui.dialogs import ErrorMessage
 from config import APP_MODE, AppMode
+from gui.dialogs import ErrorMessage
 
 
 # ----- Constants -----
+
 MAX_EMAILS_PER_DAY = 20
 MAX_ATTACHMENT_SIZE = 20  # MB
 
-# NOTE: I creted a web api for sending mail
+# NOTE: I creted a web api for sending mail to protect e-mail credentials
 MOTUS_API_URL = r'http://Markors.pythonanywhere.com/api/send_mail/'
 
 
@@ -34,11 +29,21 @@ class EMailType(Enum):
 
 
 def _get_file_size_mb(fp):
+    """Returns file size in MB
+
+    :param fp <str> Filepath
+    :return <int>
+    """
     file_size_bytes = path.getsize(fp)
     return int(file_size_bytes / 1024 / 1024)
 
 
 def _email_type_to_subject(email_type):
+    """Returns e-mail subject text
+
+    :param email_type <EMailType>
+    :return <str>
+    """
     _user_id = Session.get_user_id()
     email_type_to_str_dict = {
         EMailType.DEFECT: f'[Defect] User: {_user_id}',
@@ -49,6 +54,7 @@ def _email_type_to_subject(email_type):
 
 
 def _update_email_sent_count():
+    """Updates e-mail sent count for active day in session file"""
     session_json = Session.get_session_json()
     emails_sent_per_day = session_json['emails_sent_per_day']
     today_iso = datetime.date.today().isoformat()
@@ -60,6 +66,7 @@ def _update_email_sent_count():
 
 
 def _email_day_count_maxed():
+    """Checks if e-mail sent day count has been maxed and returns <bool>"""
     session_json = Session.get_session_json()
     emails_sent_per_day = session_json['emails_sent_per_day']
     today_iso = datetime.date.today().isoformat()
@@ -70,6 +77,12 @@ def _email_day_count_maxed():
 
 
 def _log_and_show_error(action_fail_msg, error_msg='', exc=None):
+    """Write error message in log file and shown it in dialog
+
+    :param action_fail_msg <str> Action type fail message
+    :param error_msg <str> Full error message
+    :param exc None or instance of <Exception>
+    """
     logging.error(action_fail_msg, exc_info=exc)
     if APP_MODE == AppMode.DEVELOPMENT_MODE and exc:
         text = f'{error_msg}\n\n'\
@@ -81,11 +94,12 @@ def _log_and_show_error(action_fail_msg, error_msg='', exc=None):
 
 
 def send_email(email_type, body, attachment_fp=None):
-    """Sends an e-mail to Motus App official address
+    """Sends an e-mail with Motus API to App developers
 
-    :param email_type: <EMailType>
-    :param body: <str>
-    :param attachment_fp: <str> or None
+    :param email_type <EMailType>
+    :param body <str>
+    :param attachment_fp <str> or None
+    :return <bool> Bool indicating if the e-mail was sent
     """
     # ---- Check file size and mails per day count -----
     if _email_day_count_maxed():

@@ -1,4 +1,7 @@
+# PyCharm folder
 .idea
+
+# Local project
 sandbox/
 exports/motfiles/*
 exports/pdf/*
@@ -10,6 +13,9 @@ test/exports/motfiles/*
 test/exports/pdf/*
 *.log
 *_backup.db
+*.snippet
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 

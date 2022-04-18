@@ -7,6 +7,11 @@ from gui.dialogs import ErrorMessage
 
 @log_and_show_method_exception('Download content failed')
 def get_content_from_url(url):
+    """Downloads content from given url
+
+    :param url <str> Url to the content
+    :return <bytes>
+    """
     try:
         response = requests.get(url)
     except requests.exceptions.RequestException as ex:
