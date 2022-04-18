@@ -1,15 +1,15 @@
 import re
 
-from database.data_model import SupersetRow, ExerciseExecutionWorkData, SupersetTopRow, SupersetBottomRow, \
-    TableRowType, ExerciseExecutionRow, TableRowType
+from database.data_model import (
+    SupersetRow, ExerciseExecutionWorkData, SupersetTopRow, SupersetBottomRow,
+    TableRowType, ExerciseExecutionRow, TableRowType,
+)
 from database.db_obj import DB
-# from gui.dialogs import ErrorMessage
 
+
+# ----- Constants -----
 
 REP_EXEC_TIME = 3  # seconds
-
-
-# TODO: (IMPORTANT !) Change exercise name "34 situps"
 
 DEFAULT_EXER_EXEC_DATA = {
     # key=column; value=sets or reps pr pause
@@ -37,7 +37,7 @@ _COL_VALUE_CHECK_ERROR_MSG = \
     f'\t- must be minimum %s\n' \
     f'\t- must be maximum %s\n'.expandtabs(4)
 
-# .expandtabs(4)
+
 SETS_COL_VALUE_CHECK_ERROR_MSG = _COL_VALUE_CHECK_ERROR_MSG % \
                                  ('Sets', COL_VAL_CONSTRAINTS[1][0], COL_VAL_CONSTRAINTS[1][-1])
 
@@ -49,12 +49,23 @@ PAUSE_COL_VALUE_CHECK_ERROR_MSG = _COL_VALUE_CHECK_ERROR_MSG % \
 
 
 def execution_data_valid(column, value):
+    """Checks if table execution row data is valid
+
+    :param column <int> Table column
+    :param value <int>
+    return <bool>
+    """
     if value in COL_VAL_CONSTRAINTS[column]:
         return True
     return False
 
 
 def get_error_msg_for_col(col):
+    """Returns error message for invalid set value in column
+
+    :param col <int> Table column
+    :return <str>
+    """
     if col == 1:
         return SETS_COL_VALUE_CHECK_ERROR_MSG
     elif col == 2:
@@ -64,6 +75,11 @@ def get_error_msg_for_col(col):
 
 
 def get_default_exer_exec_data(exer_type):
+    """Returns default exercise execution row data
+
+    :param exer_type <str>
+    :return <ExerciseExecutionWorkData>
+    """
     if exer_type in ('Cardio', 'Stretching'):
         sets_reps_pause = tuple(DEFAULT_EXER_EXEC_DATA['non_reps'].values())
         on_reps = False
@@ -74,17 +90,23 @@ def get_default_exer_exec_data(exer_type):
     return row_data
 
 
-def get_default_ss_bottom_data():
-    return DEFAULT_EXER_EXEC_DATA['reps'][1], DEFAULT_EXER_EXEC_DATA['reps'][3]
-
-
 def get_default_col_value(col, on_reps):
+    """Returns default table column value
+
+    :param col <int> Column -> [0, 4]
+    :param on_reps <bool>
+    :return <int>
+    """
     reps_key = 'reps' if on_reps else 'non_reps'
     return DEFAULT_EXER_EXEC_DATA[reps_key][col]
 
 
 def calc_workout_time(table_rows):
-    """Calculates and returns workout time in minutes"""
+    """Calculates and returns workout time in minutes
+
+    :param table_rows <ExerciseExecutionRow> or <SupersetRow>
+    :return <int> Workout time in minutes
+    """
     total_workout_time_sec = 0  # seconds
     in_superset_exec_time_sec = 0  # seconds
     for table_row in table_rows:
@@ -108,8 +130,14 @@ def calc_workout_time(table_rows):
 
 
 def filter_existing_exercise_row_data(rows_data):
+    """Checks if exercise exists in DB and returns existing and missing exercises
+
+    :param rows_data <list(row_data)> Row data is a tuple that contains data get from calling
+                                      method 'to_data' from object instance from '_TableRow'
+    :return <tuple(<list(row_data)>, <list(exercise_id)>)>
+    """
+    exist_rows_data = []
     missing_exercises = []
-    ok_rows_data = []
     for row_data in rows_data:
         if row_data[0] == str(TableRowType.EXER_EXEC):
             # --- Check if exercise exists in DB ---
@@ -117,5 +145,5 @@ def filter_existing_exercise_row_data(rows_data):
             if not exer_data:
                 missing_exercises.append(row_data[2])
                 continue
-        ok_rows_data.append(row_data)
-    return ok_rows_data, missing_exercises
+        exist_rows_data.append(row_data)
+    return exist_rows_data, missing_exercises

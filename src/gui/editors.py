@@ -48,7 +48,7 @@ from util.value import int_list_in_order
 from workout import (
     workout_name_valid, exercise_filtered_name_valid, plan_name_valid,
     get_available_generic_workout_name, get_default_exer_exec_data,
-    get_default_col_value, get_default_ss_bottom_data, calc_workout_time,
+    get_default_col_value, calc_workout_time,
     PLAN_NAME_CHECK_ERROR_MSG, WORKOUT_NAME_CHECK_ERROR_MSG,
     EXERCISE_FILTERED_NAME_CHECK_ERROR_MSG, filter_existing_exercise_row_data
 )
@@ -680,7 +680,7 @@ class _WorkoutTableEditor(_WorkoutTableBase):
         new_bottom_row = new_top_row + len(sel_rows) + 1  # +1 because of 1st added ss row
         numb_of_new_ss = len([r for r in model.exer_exec_rows if type(r) == SupersetTopRow]) + 1
         self.add_row(SupersetTopRow(numb_of_new_ss), new_top_row)
-        ss_bottom_data = get_default_ss_bottom_data()
+        ss_bottom_data = get_default_col_value(1, True), get_default_col_value(3, True)
         self.add_row(SupersetBottomRow(numb_of_new_ss, *ss_bottom_data), new_bottom_row)
 
     @table_altered
