@@ -85,7 +85,8 @@ def create_workout_table(view_type, workout_name, workout_rows):
             else:
                 p_i = Paragraph(str((exer_row + 1)), style=ps_text)
                 icon_image = Image(io.BytesIO(table_row.icon_bytes))
-                p_name = Paragraph(table_row.icon_and_name[1], style=ps_text_exercise)
+                _exer_name = table_row.icon_and_name[1]
+                p_name = Paragraph(_exer_name, style=ps_text_exercise)
                 p_sets = Paragraph(str(table_row.sets), style=ps_text)
                 reps = str(table_row.reps) if table_row.on_reps else str(table_row.reps) + ' min'
                 p_reps = Paragraph(reps, style=ps_text)
@@ -101,7 +102,7 @@ def create_workout_table(view_type, workout_name, workout_rows):
     _icon_col_width = 50.0
     _sets_reps_pause_col_widths = (50.0, 50.0, 50.0)
     _exer_name_col_width = CONTENT_WIDTH - _numb_col_width - _icon_col_width - \
-                               sum(_sets_reps_pause_col_widths)
+                           sum(_sets_reps_pause_col_widths)
     col_widths = [_numb_col_width, _icon_col_width, _exer_name_col_width,
                   *_sets_reps_pause_col_widths]
     styles_span_ss_top = [('SPAN', (0, row), (-1, row)) for row in ss_top_row_indexes]
@@ -271,6 +272,7 @@ class PdfPlanDocument(_PdfDocument):
         # For every workout create day/workout table
         _plan_view_type = ViewType.WORKOUT_VIEW if self.pdf_settings['view_type'] == 'workout_view' \
             else ViewType.DAYS_VIEW
+        workouts_added = []
         for i, workout in enumerate(self.plan_pdf_data.workouts):
             if _plan_view_type == ViewType.DAYS_VIEW:
                 if not workout:
@@ -282,10 +284,11 @@ class PdfPlanDocument(_PdfDocument):
                     _table_rows = workout.table_rows
                 table = create_workout_table(_plan_view_type, DAYS_TITLE[i], _table_rows)
             else:  # == ViewType.WORKOUT_VIEW
-                if not workout:
+                if not workout or workout.name in workouts_added:
                     continue
                 else:
                     table = create_workout_table(_plan_view_type, workout.name, workout.table_rows)
+                    workouts_added.append(workout.name)
             self.elements.append(Spacer(1, inch * 0.5))
             self.elements.append(table)
             if hasattr(workout, 'workout_time'):
