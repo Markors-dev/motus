@@ -4,16 +4,17 @@ from contextlib import contextmanager
 from .obj import SingletonDecorator
 
 
+# NOTE: This class was used in Development
 @SingletonDecorator
 class Timer:
-    """ Times methods and code blocks """
+    """Records execution times for methods and code blocks"""
 
     def __init__(self):
         self.methods = {}
         self.code_blocks = {}
 
     def time_method(self, func):
-        func_name = func.__name__ + '()'
+        func_name = func.__name__
         if not self.methods.get(func_name, None):
             self.methods[func_name] = _TimedMethod(func_name)
 

@@ -33,14 +33,15 @@ class ImageDim(Enum):
 
 
 def _to_image_bytes(image):
+    """Converts Image to bytes and returns it
+
+    :param image <PIL.Image>
+    :return <bytes> Image bytes
+    """
     buf = io.BytesIO()
     format_ = image.format if image.format else 'JPEG'
     image.save(buf, format=format_)
     return buf.getvalue()
-
-
-def from_bytes_to_image(image_bytes):
-    return Image.open(io.BytesIO(image_bytes))
 
 
 def get_image_bytes_size(image_bytes):
@@ -49,6 +50,13 @@ def get_image_bytes_size(image_bytes):
 
 
 def get_icons_dict(image_bytes):
+    """Returns 3 image icons(as dict) in 3 sizes defined in module 'config'
+
+    Returned dict format is e.g. {50: %image bytes%, 60: %image bytes%, ...}
+
+    :param image_bytes <bytes> Image bytes
+    :return <dict>
+    """
     icons_dict = {}
     for icon_size in ICON_SIZES:
         width, height = icon_size[0], icon_size[1]
@@ -57,32 +65,47 @@ def get_icons_dict(image_bytes):
 
 
 def get_file_binary(filepath):
+    """Returns bytes of a file or False if an error has occured
+
+    :param filepath <str> Filepath
+    :return <bytes> or False
+    """
     try:
         with open(filepath, 'rb') as file:
             blob_data = file.read()
     except IOError:
-        logging.error(f'Failed reading binary data from motfile "{filepath}"', exc_info=True)
+        logging.error(f'Failed reading binary data from file "{filepath}"', exc_info=True)
         return False
     return blob_data
 
 
 def verify_image_bytes(image_bytes):
+    """Verifies if image format is supported and returns bool
+
+    :param image_bytes <bytes> Image bytes
+    :return <bool>
+    """
     try:
         image = Image.open(io.BytesIO(image_bytes))
     except PIL.UnidentifiedImageError:
         logging.error('File is not a supported image for this App.', exc_info=True)
         return False
     if image.format.lower() not in PROJ_SUPPORTED_IMG_EXTENSIONS:
-        logging.error(f'Image motfile format is not supported for this App.\n'
+        logging.error(f'Image format is not supported for this App.\n'
                       f'Supported image formats: {PROJ_SUPPORTED_IMG_EXTENSIONS}.')
         return False
     return True
 
 
 def import_image_from_pc(image_fp):
+    """Loads image bytes, verifies it and returns it
+
+    :param image_fp <str> Image filepath
+    :return <bytes> or False
+    """
     image_extension = image_fp.split('.')[-1]
     if image_extension not in PROJ_SUPPORTED_IMG_EXTENSIONS:
-        logging.error(f'Image motfile "{image_fp}" format is not supported in App\n'
+        logging.error(f'Image "{image_fp}" format is not supported in App\n'
                       f'Supported image extensions: {PROJ_SUPPORTED_IMG_EXTENSIONS}')
         return False
     image_bytes = get_file_binary(image_fp)
@@ -94,8 +117,9 @@ def import_image_from_pc(image_fp):
 def _crop_from_image(image, rect):
     """Crops image with given rect
 
-    :param image: <PIL.Image> Image object
-    :param rect: <QtCore.QRect> or tuple(x1, y1, x2, y2) QRect or tuple
+    :param image <PIL.Image> Image object
+    :param rect <QtCore.QRect> or tuple(x1, y1, x2, y2)
+    :return <PIL.Image>
     """
     crop_box = rect if type(rect) == tuple else \
         (rect.x(), rect.y(), rect.x() + rect.width(), rect.y() + rect.height())
@@ -106,8 +130,9 @@ def _crop_from_image(image, rect):
 def crop_from_image_bytes(image_bytes, rect):
     """Crops image with given rect
 
-    :param image_bytes: <bytes> Image as bytes object
+    :param image_bytes: <bytes> Image bytes
     :param rect: <QtCore.QRect> Rect object with attributes: x, y, width and height.
+    :return <bytes> Image bytes
     """
     image = Image.open(io.BytesIO(image_bytes))
     cropped_image = _crop_from_image(image, rect)
@@ -116,9 +141,9 @@ def crop_from_image_bytes(image_bytes, rect):
 
 
 def _resize_image_prop(orig_image, image_dim, dimension_size):
-    """ Proportionally resizes input image using width or height.
+    """ Proportionally(in aspect ratio) resizes image and returns it
 
-    :param orig_image : <PIL.Image> or <bytes> Image object
+    :param orig_image : <PIL.Image> Image object
     :param image_dim: <ImageDim> - Image dimension(WIDTH or HEIGHT)
     :param dimension_size: <int> - Image width or height size
     :return: <PIL.Image> - resized image
@@ -135,6 +160,13 @@ def _resize_image_prop(orig_image, image_dim, dimension_size):
 
 
 def resize_image_bytes_prop(orig_image_bytes, image_dim, dimension_size):
+    """ Proportionally(in aspect ratio) resizes image and returns it
+
+    :param orig_image_bytes <bytes> Image bytes
+    :param image_dim <ImageDim> - Image dimension(WIDTH or HEIGHT)
+    :param dimension_size <int> - Image width or height size
+    :return: <PIL.Image> - resized image
+    """
     orig_image = Image.open(io.BytesIO(orig_image_bytes))
     resized_image = _resize_image_prop(orig_image, image_dim, dimension_size)
     resized_image_bytes = _to_image_bytes(resized_image)
@@ -142,10 +174,10 @@ def resize_image_bytes_prop(orig_image_bytes, image_dim, dimension_size):
 
 
 def resize_image(orig_image, new_size):
-    """ Resizes input image.
+    """ Resizes image and returns it
 
-    :param orig_image: <str> - 'width' or 'height'
-    :param new_size: (width, height) - new image size
+    :param orig_image <PIL.Image>
+    :param new_size <tuple(<int>, <int>)> - Image size in (width, height)
     :return: <PIL.Image> - resized image
     """
     new_image = orig_image.resize(new_size, Image.LANCZOS)
@@ -153,10 +185,10 @@ def resize_image(orig_image, new_size):
 
 
 def resize_image_bytes(orig_image_bytes, new_size):
-    """ Resizes input image.
+    """ Resizes image(in bytes) and returns it
 
-    :param orig_image_bytes: <bytes> - Image bytes
-    :param new_size: (width, height) - new image size
+    :param orig_image_bytes <bytes> Image bytes
+    :param new_size: (width, height) new image size
     :return: <PIL.Image> - resized image
     """
     orig_image = Image.open(io.BytesIO(orig_image_bytes))
@@ -165,12 +197,18 @@ def resize_image_bytes(orig_image_bytes, new_size):
     return resized_image_bytes
 
 
-# ----- Below methods were used before - left for possible future use -----
+#  Methods below were used before in development.
+#  Now are left for possible future use
 
 
-def get_image_size(imagepath):
+def get_image_size(image_fp):
+    """Returns image size in bytes
+
+    :param image_fp <str>  Image filepath
+    :return <int>
+    """
     im_par = ImageFile.Parser()
-    with open(imagepath, "rb") as f:
+    with open(image_fp, "rb") as f:
         chunk = f.read(2048)
         count = 2048
         while chunk != "":
@@ -186,8 +224,8 @@ def crop_square_from_image(orig_image, crop_orientation=CropOrientation.CENTER):
     """Crops image to a square size, preserving width(if image is in portrait) or
     height(if image is in landscape).
 
-    :param orig_image: <PIL.Image> - new image width or height
-    :param crop_orientation: <CropOrientation>
+    :param orig_image <PIL.Image> -> Original image
+    :param crop_orientation <CropOrientation>
     :return: <PIL.Image> - resized square image
     """
     image_width, image_height = orig_image.size
@@ -227,6 +265,8 @@ def get_next_pos_image(dirpath):
     """Generator that yields motfile paths from some dir who have
     the appropriate int value '_exer_id' written in the 1st part
     of the filename
+
+    :param dirpath <str> Directory path
     """
     _exer_id = None
     get_exer_id = True

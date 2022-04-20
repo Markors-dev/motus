@@ -1,6 +1,11 @@
 
 
 class SingletonDecorator:
+    """Creates a singleton class
+
+    All decorated classed are stored in class attribute 'singleton_decorators'.
+    """
+
     singleton_decorators = []
 
     def __init__(self, cls):
@@ -15,6 +20,10 @@ class SingletonDecorator:
 
     @staticmethod
     def clean_instances():
+        """Removes references to every singleton class
+
+        This is needed so that the App can be restarted
+        """
         for singletons in SingletonDecorator.singleton_decorators:
             singletons.instance = None
 

@@ -11,6 +11,11 @@ ExceptionWithMsg = namedtuple('ExceptionWithMsg', ('exc', 'msg'))
 
 
 def get_tb_msg_from_exc(exc):
+    """Returns traceback message extracted from traceback object
+
+    :param exc <Exception> Instance of this type
+    :return <str> Traceback message
+    """
     tb_msg = f'Traceback:\n' + \
              ''.join(traceback.format_tb(exc.__traceback__))
     return tb_msg

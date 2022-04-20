@@ -8,7 +8,7 @@ from gui.widgets import CrashReportErrorMessage
 
 def my_exception_hook(type_, value, tb):
     """
-    Intended to be assigned to sys.exception as a hook.
+    Intended to be assigned to 'sys.exception' as a hook.
     Gives opportunity to do something useful
     with info from uncaught exceptions.
 
