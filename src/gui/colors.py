@@ -47,22 +47,18 @@ class Colors:
     BTTN = Color('#99CCFF')
     BTTN_HOVER = Color('#B2FF66')
     BTTN_DISABLED = Color('#EBEBE4')
-    BTTN_PRESSED = Color('#3399FF')  # same as DAY_TITLE
+    BTTN_PRESSED = Color('#3399FF')
     # ----- Table -----
     DAY_TITLE = Color('#3399FF', 'blue')
     TABLE_HEADER = Color('#CCFFCC', 'green')
     ROW = Color('#FFFF99')
     ROW_ALT = Color('#E6FFE6')
-    # SUPERSET_TOP = Color('#99FFCC', 'light blue')
     SUPERSET_TOP = Color('#FFEFD5', 'light blue')
-    # SUPERSET_BOTTOM = Color('#66CC99', 'light blue')
     SUPERSET_BOTTOM = Color('#FFDAB9', 'light blue')
     # ----- Titles -----
     TITLE = Color('#009999', 'greenish')
     PLAN_TITLE = Color('#4169E1', 'Dark Cyan')
     WORKOUT_TITLE = Color('#008080', 'Teal')
-    # EXERCISE_TITLE = Color('#FFCC99', 'light orange')
-    # EXERCISE_TITLE = Color('#87CEFA', 'LightSkyBlue')
     EXERCISE_TITLE = Color('#8FBC8F', 'LightSkyBlue')
     PLAN_TYPE = Color('#F0FFF0', 'FloralWhite')
 

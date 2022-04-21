@@ -6,7 +6,6 @@ from gui.dialogs import ErrorMessage
 from gui.colors import Colors, ThemeType, Theme
 from gui.flags import AlignFlag, SizePolicy
 from gui.font import FontFlag, Font
-from gui.util import get_label_width
 
 
 class MyLabel(QtWidgets.QLabel):
@@ -81,7 +80,6 @@ class InfoGridLabel(MyLabel):
     def __init__(self, parent, obj_name, text, bg_theme):
         super().__init__(parent, obj_name, text)
         self.theme = Theme(bg_theme)
-        align_flag = QtCore.Qt.AlignmentFlag
         if bg_theme == ThemeType.DARK:
             font_flag = FontFlag.BIG_TEXT
             align = AlignFlag.Right | AlignFlag.VCenter

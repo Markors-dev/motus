@@ -7,7 +7,7 @@ from PyQt5 import QtWidgets
 from config import PROJ_DIR, APP_MODE, AppMode
 from settings import Settings
 from .flags import ImageFp, AlignFlag, ButtonType, SizePolicy
-from .util import get_window_center_pos, find_button_by_text, set_value
+from .util import get_center_pos, find_button_by_text, set_value
 
 
 class BaseDialog(QtWidgets.QDialog):
@@ -66,8 +66,7 @@ class BaseInfoDialog(BaseDialog):
         self.setLayout(self.vbox_layout)
         # ----- Post init actions -----
         self.adjustSize()
-        pos = self.mapToGlobal(parent_pos) if parent_pos else \
-            get_window_center_pos(self)
+        pos = self.mapToGlobal(parent_pos) if parent_pos else get_center_pos(self)
         self.setGeometry(pos.x(), pos.y(), self.width(), self.height())
 
 

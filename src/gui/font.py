@@ -27,6 +27,8 @@ class FontFlag(Enum):
 
 
 class Font:
+    """This class is used to create fonts and font families"""
+
     PREFFERED_FONTS = [
         'Arial',
         'Calibri',
@@ -35,6 +37,11 @@ class Font:
 
     @staticmethod
     def get_font(font_flag=FontFlag.DEFAULT_FONT):
+        """Creates and returns font object with font flag
+
+        :param font_flag <FontFlag>
+        :return <QtGui.QFont>
+        """
         if font_flag in (FontFlag.TINY_TEXT, FontFlag.TINY_TEXT_BOLD):
             font_size = 6
         elif font_flag in (FontFlag.SMALL_TEXT, FontFlag.SMALL_TEXT_BOLD):
@@ -54,12 +61,12 @@ class Font:
         font = QtGui.QFont(Settings().getValue('font_family'), font_size)
         bold = True if font_flag in (0, 2, 4, 6, 8, 10, 12) else False
         if bold:
-            # font.setBold(True)
             font.setWeight(600)
         return font
 
     @staticmethod
     def get_font_families():
+        """Returns font available families"""
         # NOTE: 'Helvetica' is available, although not returned in 'families()'
         families = QtGui.QFontDatabase().families() + ['Helvetica']
         return sorted(families)

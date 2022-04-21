@@ -11,7 +11,7 @@ from settings import Settings
 from log import run_logging_setup
 from gui.main_window import MainWindow
 from gui.flags import ExitCode, ImageFp
-from gui.util import get_window_center_pos
+from gui.util import get_center_pos
 from util.hooks import my_exception_hook
 
 
@@ -30,7 +30,7 @@ class App(QtWidgets.QApplication):
         Session.start_session()
         pixmap = QtGui.QPixmap(ImageFp.MOTUS_LOGO)
         splash = QtWidgets.QSplashScreen(pixmap)
-        splash_pos = get_window_center_pos(splash)
+        splash_pos = get_center_pos(splash)
         splash.setGeometry(splash_pos.x(), splash_pos.y(),
                            splash.width(), splash.height())
         splash.show()

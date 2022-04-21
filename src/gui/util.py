@@ -1,4 +1,3 @@
-import pdb
 from pathlib import Path
 from enum import Enum
 
@@ -7,10 +6,6 @@ from PyQt5 import QtGui
 from PyQt5 import QtCore
 
 from settings import Settings
-
-
-def _isinstance_from_str(widget, class_name):
-    return True if widget.__class__.__name__ == class_name else False
 
 
 widget_class_getter_dict = {
@@ -36,6 +31,11 @@ widget_class_getter_dict = {
 
 
 def get_value(widget):
+    """Returns value of a QWidget object
+
+    :param widget <QWidget>
+    :return <object> Can be: text, image bytes, checked value, etc.
+    """
     getter_classes = tuple(widget_class_getter_dict.keys())
     for class_ in type(widget).mro():
         class_name = class_.__name__
@@ -67,12 +67,18 @@ widget_class_setter_dict = {
 
 
 def set_value(widget, *args):
+    """Set value of a QWidget object
+
+    The value can be: text, image bytes, checked value, etc.
+
+    :param widget <QWidget>
+    :return <None>
+    """
     setter_classes = tuple(widget_class_setter_dict.keys())
     for class_ in type(widget).mro():
         class_name = class_.__name__
         if class_name in setter_classes:
             widget_setter = widget_class_setter_dict[class_name]
-            # setter_args = (widget, value, *kwargs.values()) if kwargs else (widget, value)
             widget_setter(widget, *args)
             return
     raise ValueError(f'Class {widget.__class__.__name__} is not registered for '
@@ -80,9 +86,10 @@ def set_value(widget, *args):
 
 
 def get_parent(widget, obj_name):
-    """Returns widgets parent by object name.
+    """Returns widget parent by searching object name
 
     If parent is not found, returns None.
+
     :param widget <QWidget>
     :param obj_name <str>
     :return <QWidget> or None
@@ -95,20 +102,13 @@ def get_parent(widget, obj_name):
     return parent_widget
 
 
-def get_child_widget(widget, obj_name):
-    pytest.set_trace()
-    for child_widget in widget.children():
-        pass
-
-
 def get_label_width(text, font=None):
-    """Calculates and returns width of label in pixels
+    """Calculates and returns width of label text
 
-    @param: text <str> The text
-    @param: font <None> or <QtGui.QFont> Either default font is used or
-
+    :param text <str> Label text
+    :param font <None> or <QtGui.QFont> Default font is used if not given
+    :return <int> Label width
     """
-
     label = QtWidgets.QLabel()
     if font:
         label.setFont(font)
@@ -116,20 +116,38 @@ def get_label_width(text, font=None):
     return label.fontMetrics().boundingRect(label.text()).width()
 
 
-def get_window_center_pos(window):
+def get_center_pos(window):
+    """Calculates and returns position(top-left point) of a centered widget
+
+    :window <QtWidgets.QWidget>
+    :return <QtCore.QPoint>
+    """
     main_display = Settings().getValue('main_display')
-    display_geometry = Settings().getValue(f'{main_display}_geometry')
-    pos = QtCore.QPoint(display_geometry[0] + display_geometry[2] // 2 - window.width() // 2,
-                        display_geometry[1] + display_geometry[3] // 2 - window.height() // 2)
-    widget_geometry = QtCore.QRect(pos.x(), pos.y(), window.width(), window.height())
-    return widget_geometry
+    disp_geo = Settings().getValue(f'{main_display}_geometry')
+    center_pos = QtCore.QPoint(disp_geo[0] + disp_geo[2] // 2 - window.width() // 2,
+                               disp_geo[1] + disp_geo[3] // 2 - window.height() // 2)
+    return center_pos
 
 
 def find_button_by_text(bttn_iter, text, get_none=False, substr=True):
+    """Find and returns unique button by looking button text
+
+    If parameter 'get_none' is True, function returns None if widget is not
+    found or is not unique in iterable.
+    If parameter 'substr' is True, it searches button text substrings.
+
+    :param bttn_iter <list> or <tuple> Iterable of button widgets
+    :param text <str> Text to search in button text
+    :param get_none <bool>
+    :param substr <bool>
+    :return <QtWidgets.QPushButton> or <None>
+    """
     text = text.lower()
-    lambda_text_check = lambda _bttn_text, _text: _text in _bttn_text if substr else \
-        lambda _bttn_text, _text: _bttn_text == _text
-    bttns = [bt for bt in bttn_iter if lambda_text_check(bt.text().lower(), text)]
+    if substr:
+        def _text_check(_bttn_text, _text): return _text in _bttn_text
+    else:
+        def _text_check(_bttn_text, _text): return _bttn_text == _text
+    bttns = [bt for bt in bttn_iter if _text_check(bt.text().lower(), text)]
     if len(bttns) == 0:
         if get_none:
             return None
@@ -142,6 +160,17 @@ def find_button_by_text(bttn_iter, text, get_none=False, substr=True):
 
 
 def find_widget_by_attr(widget_iter, attr_name, attr_val, get_none=False):
+    """Find and returns unique widget by looking attribute value
+
+    If parameter 'get_none' is True, function returns None if widget is not
+    found or is not unique in iterable.
+
+    :param widget_iter <list> or <tuple> Iterable of widgets
+    :param attr_name <str> Attribute name
+    :param attr_val <object> Attribute value
+    :param get_none <bool>
+    :return <QtWidgets.QWidget> or <None>
+    """
     widgets = [w for w in widget_iter if getattr(w, attr_name) == attr_val]
     if len(widgets) == 0:
         if get_none:
@@ -154,15 +183,3 @@ def find_widget_by_attr(widget_iter, attr_name, attr_val, get_none=False):
         raise ValueError(f'Multiple widgets with attr value "{attr_name}"="{attr_val}" '
                          f'found in iterable.')
     return widgets[0]
-
-
-def get_icon_bytes_from_image(image):
-    """
-    :param image: <PIL.Image>
-    :return: <bytes>
-    """
-    icon_50_bytes = images.resize_image(image, (50, 50)).tobytes()
-    icon_60_bytes = images.resize_image(image, (60, 60)).tobytes()
-    icon_70_bytes = images.resize_image(image, (70, 70)).tobytes()
-    icons_dict = {50: icon_50_bytes, 60: icon_60_bytes, 70: icon_70_bytes}
-    return pickle.dumps(icons_dict)
