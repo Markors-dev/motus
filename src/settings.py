@@ -34,15 +34,14 @@ DEFAULT_PROPERTIES = {
 @SingletonDecorator
 class Settings:
 
-    def __init__(self, screens=None):
+    def __init__(self, screens_geometries=None):
         """ Method is run only once per runtime.
 
         :param screens_geometries: list(<QtCore.QRect>)
         """
         if not Path(SETTINGS_FILE).exists():
             # Create props on initial app run(or if settings are deleted)
-            assert screens, 'Screens are not provided'
-            screens_geometries = [scr.geometry() for scr in screens]
+            assert screens_geometries, 'Screens are not provided'
             self._create_props(screens_geometries)
         # ----- Data -----
         self.values = self._get_props()

@@ -18,7 +18,8 @@ from util.hooks import my_exception_hook
 class App(QtWidgets.QApplication):
     def __init__(self):
         super().__init__(sys.argv)
-        Settings(self.screens())
+        _screens_geometries = [scr.geometry() for scr in self.screens()]
+        Settings(_screens_geometries)
         self.window = MainWindow()
         self.window.hide()
         if APP_MODE == AppMode.PRODUCTION_MODE:
