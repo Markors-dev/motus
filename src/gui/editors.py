@@ -282,10 +282,12 @@ class _PageSelector(QtWidgets.QWidget):
         self._create_and_add_items()
 
     def select_page(self, page_numb):
-        bttn_numbers = [w for w in self.buttons_and_dots if type(w) == RoundPushButton]
-        bttn_to_click = [bt for bt in bttn_numbers if int(bt.text()) == page_numb][0]
-        if bttn_to_click.isEnabled():
-            bttn_to_click.click()
+        _bttn_numbers = [w for w in self.buttons_and_dots if type(w) == RoundPushButton]
+        bttn_to_click = [bt for bt in _bttn_numbers if int(bt.text()) == page_numb][0]
+        bttn_to_click.setVisible(True)
+        bttn_to_click.setEnabled(True)
+        # if bttn_to_click.isEnabled():
+        bttn_to_click.click()
 
     def _set_widget_properties(self, bttn_clicked):
         """Sets properties of buttons, dots(if exist) and arrow image buttons,
@@ -504,20 +506,21 @@ class ExerciseListViewer(QtWidgets.QFrame):
         page_selector = self.exercises_box.page_selector
         list_exercises = self.exercises_box.list_exercises
         page_selected = page_selector.page_selected
-        row_sel = list_exercises.selectedIndexes()[0].row()
+        row_selected = list_exercises.selectedIndexes()[0].row()
         filtered = self._filter_exercises(self.active_filters, show_msg=False)
         if not filtered:
-            list_exercises.setModel(ExerciseListModel([]))
-            return False
+            self._filter_exercises()
+            # list_exercises.setModel(ExerciseListModel([]))
+            # return None
         page_to_select = page_selected if page_selected <= page_selector.numb_of_pages else \
             page_selected - 1
-        row_to_select = row_sel if row_sel <= (list_exercises.model().rowCount() - 1) else \
-            row_sel - 1
+        row_to_select = row_selected if row_selected <= (list_exercises.model().rowCount() - 1) else \
+            row_selected - 1
         page_selector.select_page(page_to_select)
         if row_to_select >= 0:
             list_exercises.select_index(row_to_select)
 
-    def _filter_exercises(self, filters, show_msg=True):
+    def _filter_exercises(self, filters=None, show_msg=True):
         exercises = DB().select_exercise_list_rows(filters)
         if not exercises:
             if show_msg:
