@@ -58,7 +58,7 @@ def create_workout_table(view_type, workout_name, workout_rows):
         Paragraph('Exercise', style=ps_header),
         Paragraph('', style=ps_header),
         Paragraph('Sets', style=ps_header),
-        Paragraph('Reps', style=ps_header),
+        Paragraph('Reps/Time', style=ps_header),
         Paragraph('Pause', style=ps_header),
     ]
     # ----- Exercise rows -----
@@ -98,13 +98,11 @@ def create_workout_table(view_type, workout_name, workout_rows):
     data = [title_row, header_row, *table_rows]
 
     # ----- Set table style ----
-    _numb_col_width = 50.0
+    _numb_col_width = 30.0
     _icon_col_width = 50.0
-    _sets_reps_pause_col_widths = (50.0, 50.0, 50.0)
-    _exer_name_col_width = CONTENT_WIDTH - _numb_col_width - _icon_col_width - \
-                           sum(_sets_reps_pause_col_widths)
-    col_widths = [_numb_col_width, _icon_col_width, _exer_name_col_width,
-                  *_sets_reps_pause_col_widths]
+    _sets_reps_pause_col_widths = (50.0, 80.0, 50.0)
+    _exer_name_col_width = CONTENT_WIDTH - _numb_col_width - _icon_col_width - sum(_sets_reps_pause_col_widths)
+    col_widths = [_numb_col_width, _icon_col_width, _exer_name_col_width, *_sets_reps_pause_col_widths]
     styles_span_ss_top = [('SPAN', (0, row), (-1, row)) for row in ss_top_row_indexes]
     styles_ss_top_bg = [('BACKGROUND', (0, row), (-1, row), colors.Color(*Colors.SUPERSET_TOP.dec, 1)) for
                         row in ss_top_row_indexes]
@@ -116,7 +114,7 @@ def create_workout_table(view_type, workout_name, workout_rows):
         ('BOTTOMPADDING', (0, 0), (-1, 1), 5),
         ('LEFTPADDING', (0, 0), (-1, 1), 0),
         ('RIGHTPADDING', (0, 0), (-1, 1), 0),
-        ('LEFTPADDING', (2, 2), (2, -1), 25),
+        ('LEFTPADDING', (2, 2), (2, -1), 20),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('SPAN', (0, 0), (-1, 0)),

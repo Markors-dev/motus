@@ -948,6 +948,7 @@ class _WorkoutEditorInfoRow(QtWidgets.QFrame, MouseMoveTracker):
             WORKOUT_NAME_CHECK_ERROR_MSG, bg_color=Colors.WORKOUT_TITLE.hex,
             border_radius=4, text_color='white', align_flag=AlignFlag.Center,
             retain_msg_size=False, font_flag=FontFlag.NORMAL_TEXT)
+        self.workout_name.setToolTip('Workout name')
         _id_name_dict = dict(DB().select_from_table('plan_type', ('id', 'name')))
         self.workout_type = DBComboBox(
             self, 'cb_plan_type', _id_name_dict, font_flag=FontFlag.NORMAL_TEXT,
@@ -983,6 +984,7 @@ class WorkoutViewerInfoRow(QtWidgets.QWidget, MouseMoveTracker):
             self, 'workout_title', workout_name, font_flag=FontFlag.SMALL_TEXT,
             bg_color=Colors.WORKOUT_TITLE.hex
         )
+        self.workout_name.setToolTip('Workout name')
         _id_name_dict = dict(DB().select_from_table('plan_type', ('id', 'name')))
         self.workout_type = DBTitleLabel(
             self, 'workout_title', _id_name_dict, bg_color=Colors.PLAN_TYPE.hex,
