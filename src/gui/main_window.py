@@ -8,7 +8,7 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 from PyQt5 import QtCore
 
-from config import APP_NAME, SRC_DIR, BOOKMARKS_FILE, APP_MODE
+from config import APP_NAME, SRC_DIR, BOOKMARKS_FILE, APP_MODE, VERSION
 from settings import Settings, ICON_SIZES, EXER_PER_PAGE, DEFAULT_PROPERTIES
 from session import Session
 from export.pdf import create_plan_pdf
@@ -1155,12 +1155,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
         :return <None>
         """
-        _msg = ('''
-        Author:  Marko Raos-Stojnić
-        Version: 1.0.0.
-        E-mail:  motusappdevs@gmail.com
-        Images and data used from site:\n
-        \t-> https://www.bodybuilding.com/exercises/
+        resource_page_link = '<a href="https://www.bodybuilding.com/exercises/">LINK</a>'
+        _msg = (f'''
+        <p>
+        Author:  Marko Raos-Stojnić</h3><br><br>
+        Version: {VERSION}<br><br>
+        E-mail:  motusappdevs@gmail.com<br><br>
+        Images and data used from site:<br><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;->&nbsp;{resource_page_link}
+        </p>
         ''')
         InfoMessage('About Motus App', _msg).exec()
 

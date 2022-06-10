@@ -16,6 +16,7 @@ class AppMode(Enum):
 APP_MODE = AppMode.PRODUCTION_MODE
 APP_NAME = 'Motus'
 COMPANY_NAME = 'MyCompany'
+VERSION = '1.0.1'
 PLAN_FILE_EXTENSION = 'motplan'
 WORKOUT_FILE_EXTENSION = 'motwork'
 
