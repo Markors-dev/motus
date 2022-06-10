@@ -84,3 +84,12 @@ def pad_text(text, min_len=15):
     else:
         # text is not smaller than "min_len"
         return text
+
+
+def is_str_int(text):
+    """Checks if text can be parsed to integer"""
+    try:
+        int(text)
+    except (TypeError, ValueError):
+        return False
+    return True
