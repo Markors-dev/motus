@@ -34,6 +34,7 @@ COL_VAL_CONSTRAINTS = {
 
 _COL_VALUE_CHECK_ERROR_MSG = \
     'Column value for %s:\n' \
+    f'\t- must be an integer\n' \
     f'\t- must be minimum %s\n' \
     f'\t- must be maximum %s\n'.expandtabs(4)
 
@@ -42,7 +43,7 @@ SETS_COL_VALUE_CHECK_ERROR_MSG = _COL_VALUE_CHECK_ERROR_MSG % \
                                  ('Sets', COL_VAL_CONSTRAINTS[1][0], COL_VAL_CONSTRAINTS[1][-1])
 
 REPS_COL_VALUE_CHECK_ERROR_MSG = _COL_VALUE_CHECK_ERROR_MSG % \
-                                 ('Reps', COL_VAL_CONSTRAINTS[2][0], COL_VAL_CONSTRAINTS[2][-1])
+                                 ('Reps/Time', COL_VAL_CONSTRAINTS[2][0], COL_VAL_CONSTRAINTS[2][-1])
 
 PAUSE_COL_VALUE_CHECK_ERROR_MSG = _COL_VALUE_CHECK_ERROR_MSG % \
                                  ('Pause', COL_VAL_CONSTRAINTS[3][0], COL_VAL_CONSTRAINTS[3][-1])
