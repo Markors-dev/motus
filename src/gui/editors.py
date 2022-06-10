@@ -721,6 +721,12 @@ class _WorkoutTableEditor(_WorkoutTableBase):
             model.exer_exec_rows[row2], model.exer_exec_rows[row1]
         self.select_index(row2, 0)
 
+    @table_altered
+    def change_on_reps(self, sel_row):
+        model = self.model()
+        new_on_reps = False if model.exer_exec_rows[sel_row].on_reps else True
+        model.exer_exec_rows[sel_row].on_reps = new_on_reps
+
     # ----- SLOTS -----
 
     def keyReleaseEvent(self, event):
@@ -765,9 +771,11 @@ class _WorkoutTableEditor(_WorkoutTableBase):
         # Set actions
         action_move_up = None
         action_move_down = None
+        action_change_on_reps = None
+        action_go_to_info = None
         action_group_superset = None
         action_remove_superset = None
-        action_go_to_info = None
+
         sel_row = sel_rows[0]
         if len(sel_rows) == 1:
             # Actions below only work with 1 row
@@ -776,6 +784,9 @@ class _WorkoutTableEditor(_WorkoutTableBase):
             if sel_row < (model.rowCount() - 1):
                 action_move_down = context_menu.addAction("Move down")
             if action_move_up or action_move_down:
+                context_menu.addSeparator()
+            if self.selectedIndexes()[0].column() == 2:
+                action_change_on_reps = context_menu.addAction("Change Reps/Time")
                 context_menu.addSeparator()
             action_go_to_info = context_menu.addAction("Show exercise info")
             context_menu.addSeparator()
@@ -813,6 +824,8 @@ class _WorkoutTableEditor(_WorkoutTableBase):
         elif action == action_move_down:
             self.switch_row_data(sel_row, sel_row + 1)
             self.select_index(sel_row + 1, 0)
+        elif action == action_change_on_reps:
+            self.change_on_reps(sel_row)
         elif action == action_go_to_info:
             exer_id = model.exer_exec_rows[sel_row].exer_id
             get_parent(self, 'week_plan_editor').signal_show_exercise_info.emit(exer_id)

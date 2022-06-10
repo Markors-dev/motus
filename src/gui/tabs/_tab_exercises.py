@@ -494,9 +494,12 @@ class ExerciseDataEditor(QtWidgets.QWidget):
     def _bttn_change_icon_clicked(self):
         info_row = self.exercise_data_viewer.basic_info_row.row
         if info_row.pos2_image_text.view_widget.image_set:
-            pos1 = ChoiceDialog('Position 1', 'Position 2').exec()
-            pos_image = get_value(info_row.pos1_image_text.view_widget) if pos1 else \
-                get_value(info_row.pos2_image_text.view_widget)
+            pos_choice_dialog = ChoiceDialog('Position 1', 'Position 2')
+            pos_choice = pos_choice_dialog.get_choice()
+            if not pos_choice:
+                return False  # Exercise icon change cancelled
+            pos_image = get_value(info_row.pos1_image_text.view_widget) if \
+                pos_choice == 'Position 1' else get_value(info_row.pos2_image_text.view_widget)
         else:
             pos_image = get_value(info_row.pos1_image_text)
         crop_dialog = CropImageDialog(
