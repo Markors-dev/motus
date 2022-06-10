@@ -7,7 +7,7 @@ from web.mail import send_email, EMailType
 from gui.flags import ImageFp, SizePolicy, LayoutOrientation, ButtonType, AlignFlag
 from gui.dialogs import BaseDialog, BaseInfoDialog, InfoMessage
 from gui.util import find_button_by_text
-from ._buttons import RadiobuttonBox, DialogButtonBox
+from ._buttons import RadiobuttonBox, DialogButtonBox, RoundPushButton
 from ._images import Image
 from ._labels import MyLabel
 from ._panes import HBoxPane
@@ -118,11 +118,9 @@ class InputTextDialog(BaseDialog):
         self.setLayout(self.grid_layout)
 
 
-class LoadListItemDialog(QtWidgets.QDialog):
+class LoadListItemDialog(BaseDialog):
     def __init__(self, title, list_class):
-        super().__init__()
-        self.setWindowTitle(title)
-        self.setWindowIcon(QtGui.QIcon(ImageFp.LOAD))
+        super().__init__(title, icon_fp=ImageFp.LOAD)
         self.setMinimumWidth(600)
         self.setMaximumWidth(1200)
         self.setMinimumHeight(600)
@@ -169,14 +167,12 @@ class CrashReportErrorMessage(BaseInfoDialog):
             InfoMessage('EMail sent', 'Crash report mail sent').exec()
 
 
-class ChoiceDialog(QtWidgets.QDialog):
+class ChoiceDialog(BaseDialog):
     def __init__(self, item1_text, item2_text):
-        super().__init__()
-        self.setWindowTitle('Choose')
-        self.setWindowFlags(QtCore.Qt.WindowType.CustomizeWindowHint |
-                            QtCore.Qt.WindowType.WindowTitleHint)
-        self.setWindowIcon(QtGui.QIcon(ImageFp.CHOOSE))
+        super().__init__('Choose', icon_fp=QtGui.QIcon(ImageFp.CHOOSE))
         self.setMinimumWidth(300)
+        # ----- Data -----
+        self.item_chosen = None  # Can be either arg "item1_text" or "item2_text"
         # ----- Text -----
         self.text = QtWidgets.QLabel(self)
         self.text.setWordWrap(True)
@@ -184,12 +180,24 @@ class ChoiceDialog(QtWidgets.QDialog):
         self.text.setSizePolicy(SizePolicy.EXPANDING, SizePolicy.MINIMUM)
         self.text.setAlignment(AlignFlag.Left | AlignFlag.VCenter)
         # ----- Button box -----
-        self.button_box = DialogButtonBox(self, item1_text, bttn_reject_text=item2_text)
+        self.bttn_choice1 = RoundPushButton(self, 'bttn_ch1', item1_text)
+        self.bttn_choice2 = RoundPushButton(self, 'bttn_ch2', item2_text)
+        self.bttn_box_hbox = HBoxPane(self, (self.bttn_choice1, self.bttn_choice2))
         # ----- Set layout -----
         self.vbox_layout = QtWidgets.QVBoxLayout(self)
         self.vbox_layout.addWidget(self.text)
-        self.vbox_layout.addWidget(self.button_box)
+        self.vbox_layout.addWidget(self.bttn_box_hbox)
         self.setLayout(self.vbox_layout)
         # ----- Connect events to slots -----
-        self.button_box.signal_accepted.connect(self.accept)
-        self.button_box.signal_rejected.connect(self.reject)
+        self.bttn_choice1.clicked.connect(lambda: self._item_choosen(item1_text))
+        self.bttn_choice2.clicked.connect(lambda: self._item_choosen(item2_text))
+
+    def _item_choosen(self, choice):
+        self.item_chosen = choice
+        self.close()
+
+    def get_choice(self):
+        self.exec()
+        if self.item_chosen:
+            return self.item_chosen
+        return False

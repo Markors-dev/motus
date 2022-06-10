@@ -11,6 +11,10 @@ from .util import get_center_pos, find_button_by_text, set_value
 
 
 class BaseDialog(QtWidgets.QDialog):
+    """Base dialog class for all custom dialog classes in App
+
+    This class sets: dialog title, icon(if provided) and title bar properties.
+    """
     def __init__(self, title, icon_fp=None):
         super().__init__()
         self.setWindowTitle(title)
@@ -22,11 +26,23 @@ class BaseDialog(QtWidgets.QDialog):
 
 
 class BaseInfoDialog(BaseDialog):
-    def __init__(self, title, image_fp, text, bttns,
-                 bttn_action_dict=None, parent_pos=None):
+    """Base dialog class for simple dialog and message classes
+
+    The dialog body consists of an image(on the left), text(on the right)
+    and a button box.
+    """
+    def __init__(self, title, image_fp, text, bttns, bttn_action_dict=None, parent_pos=None):
+        """
+        :param title <str> Dialog title
+        :param image_fp <str> Image filepath
+        :param text <str> Dialog body text
+        :param bttns <int> Dialog button box buttons flag
+        :param bttn_action_dict <None> or <dict[<str>: <func>]> Key: action button text,
+                                                                Value: action function
+        :param parent_pos <None> or <QPoint> Position of parent(upper left corner)
+        """
         super().__init__(title, icon_fp=ImageFp.MOTUS_ICON)
         self.setMinimumWidth(500)
-        # self.setMaximumWidth(600)
         self.setStyleSheet("""
         ._BaseInfoDialog {
             border: 1px solid black;
@@ -71,14 +87,28 @@ class BaseInfoDialog(BaseDialog):
 
 
 class InfoMessage(BaseInfoDialog):
+    """Simple info message containing info text and 'Ok' button"""
+
     def __init__(self, title, text, parent_pos=None):
+        """
+        :param title <str> Dialog title
+        :param text <str> Dialog body text
+        :param parent_pos <None> or <QPoint> Position of parent(upper left corner)
+        """
         bttns = ButtonType.Ok
         super().__init__(title, ImageFp.INFO, text, bttns, parent_pos=parent_pos)
         self.button_box.accepted.connect(self.accept)
 
 
 class QuestionDialog(BaseInfoDialog):
+    """Simple question message containing question text and 'Yes'/'No' buttons"""
+
     def __init__(self, title, text, parent_pos=None):
+        """
+        :param title <str> Dialog title
+        :param text <str> Dialog body text
+        :param parent_pos <None> or <QPoint> Position of parent(upper left corner)
+        """
         bttns = ButtonType.Yes | ButtonType.No
         super().__init__(title, ImageFp.QUESTION, text, bttns, parent_pos=parent_pos)
         self.button_box.accepted.connect(self.accept)
@@ -86,7 +116,14 @@ class QuestionDialog(BaseInfoDialog):
 
 
 class ErrorMessage(BaseInfoDialog):
+    """Simple error message containing info text and 'Ok' button"""
+
     def __init__(self, title, text, parent_pos=None):
+        """
+        :param title <str> Dialog title
+        :param text <str> Dialog body text
+        :param parent_pos <None> or <QPoint> Position of parent(upper left corner)
+        """
         bttns = ButtonType.Ok
         super().__init__(title, ImageFp.ERROR, text, bttns, parent_pos=parent_pos)
         self.button_box.accepted.connect(self.accept)
@@ -94,6 +131,14 @@ class ErrorMessage(BaseInfoDialog):
 
 def get_filepath_from_dialog(parent, title='Choose file from PC', start_dir=PROJ_DIR,
                              file_types='All files (*.*)'):
+    """Raises a file dialog and, after user selection, returns file path
+
+    :param parent <QWidget> Parent widget of dialog
+    :param title <str> Dialog title
+    :param start_dir <str> Path to start directory
+    :param file_types <str> Approved file types(extensions)
+    :return <str>
+    """
     parent.file_dialog = QtWidgets.QFileDialog()
     parent.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog)
     fp, _ = parent.file_dialog.getOpenFileName(parent, title, start_dir, file_types)
@@ -101,6 +146,12 @@ def get_filepath_from_dialog(parent, title='Choose file from PC', start_dir=PROJ
 
 
 def get_folderpath_from_dialog(parent, start_dir=PROJ_DIR):
+    """Raises a file dialog and, after user selection, returns folder path
+
+    :param parent <QWidget> Parent widget of dialog
+    :param start_dir <str> Path to start directory
+    :return <str>
+    """
     file_dialog = QtWidgets.QFileDialog()
     file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog)
     fp = file_dialog.getExistingDirectory(parent, 'Choose directory', start_dir)
@@ -110,9 +161,9 @@ def get_folderpath_from_dialog(parent, start_dir=PROJ_DIR):
 def raise_missing_exercises_error_msg(missing_exercises, mot_type):
     """Raises error message when exercises are missing from workout/plan
 
-    :param missing_exercises list<str> List of missing exercise names
+    :param missing_exercises <list[<str>]> List of missing exercise names
     :param mot_type <MotType> Type of Motus App object -> Workout or Plan
-    :return None
+    :return <None>
     """
     _msg = f'Some exercises are missing from App database.' \
            f'They were probably deleted.\n' \
