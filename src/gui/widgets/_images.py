@@ -3,10 +3,11 @@ from PyQt5 import QtGui
 from PyQt5 import QtCore
 
 from util import images
+from gui.colors import Colors
 from gui.flags import SizePolicy, AlignFlag, ImageFp
 from gui.font import FontFlag
 from gui.util import get_value
-from ._labels import MyLabel
+from ._labels import MyLabel, TitleLabel
 
 
 class Image(QtWidgets.QLabel):
@@ -49,11 +50,13 @@ class ImageWithText(QtWidgets.QWidget):
 
     def _init_ui(self, text):
         self.image = QtWidgets.QLabel(self)
-        self.text = MyLabel(self, 'caption', text, font_flag=FontFlag.SMALL_TEXT_BOLD)
+        self.text = TitleLabel(self, 'caption', text, font_flag=FontFlag.NORMAL_TEXT_BOLD,
+                               bg_color=Colors.IMAGE_CAPTION.hex, round_top=False)
         self.text.setAlignment(AlignFlag.HCenter)
         self.vbox_layout = QtWidgets.QVBoxLayout(self)
         self.vbox_layout.addWidget(self.image)
         self.vbox_layout.addWidget(self.text)
+        self.vbox_layout.setSpacing(0)
         self.setLayout(self.vbox_layout)
 
     def get_data(self):

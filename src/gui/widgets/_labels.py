@@ -32,11 +32,13 @@ class TitleLabel(MyLabel):
     PADDING = (4, 20, 4, 20)
 
     def __init__(self, parent, obj_name, text, font_flag=FontFlag.SMALL_TITLE_BOLD,
-                 align_flag=AlignFlag.Center, bg_color=Colors.TITLE.hex, text_color='white',
-                 round_bottom=True, size_policy=(SizePolicy.EXPANDING, SizePolicy.MAXIMUM)):
+                 align_flag=AlignFlag.Center, bg_color=Colors.TITLE.hex,
+                 text_color='white', round_top=True, round_bottom=True,
+                 size_policy=(SizePolicy.EXPANDING, SizePolicy.MAXIMUM)):
         super().__init__(parent, obj_name, text, font_flag=font_flag, align_flag=align_flag,
                          size_policy=size_policy)
-        _bottom_border_radius = 10 if round_bottom else 0
+        _top_border_radius = self.BORDER_RADIUS if round_top else 0
+        _bottom_border_radius = self.BORDER_RADIUS if round_bottom else 0
         self.setStyleSheet('''
         TitleLabel {
             padding: %spx %spx %spx %spx;
@@ -51,7 +53,7 @@ class TitleLabel(MyLabel):
         TitleLabel:disabled {
             background-color: %s;
         }
-        ''' % (*self.PADDING, bg_color, self.BORDER_RADIUS, self.BORDER_RADIUS,
+        ''' % (*self.PADDING, bg_color, _top_border_radius, _top_border_radius,
                _bottom_border_radius, _bottom_border_radius,
                bg_color, text_color, Colors.CONTAINER.hex))
 
