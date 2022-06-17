@@ -61,8 +61,9 @@ class Colors:
     WORKOUT_TITLE = Color('#008080', 'Teal')
     EXERCISE_TITLE = Color('#8FBC8F', 'LightSkyBlue')
     PLAN_TYPE = Color('#F0FFF0', 'FloralWhite')
-
+    IMAGE_CAPTION = Color('#4682B4', 'SteelBlue')
+    # ----- Info rows -----
     INFO_DARK_ROW = Color('#336699', 'dark_blue')
     INFO_LIGHT_ROW = Color('#CCFFCC', 'light_green')
-    # Validation
+    # ----- Validation -----
     INVALID_INPUT = Color('#FF9999', 'light-red')
