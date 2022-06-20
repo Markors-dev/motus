@@ -41,7 +41,7 @@ from gui.dialogs import (
 )
 from gui.flags import ImageFp, LayoutOrientation, SizePolicy, Orientation, Key, AlignFlag, MotType
 from gui.colors import Colors, ThemeType
-from gui.util import get_parent, set_value, get_value, find_widget_by_attr
+from gui.util import get_parent, set_value, get_value, find_widget_by_attr, set_widget_property
 from util import images
 from util.obj import AttrObject
 from util.value import int_list_in_order
@@ -761,6 +761,10 @@ class _WorkoutTableEditor(_WorkoutTableBase):
             sel_rows = [index.row() for index in sel_indexes]
             self.remove_rows(sel_rows)
 
+    def mousePressEvent(self, mouse_event: QtGui.QMouseEvent):
+        get_parent(self, 'week_plan_editor').set_selected_table(self.objectName())
+        QtWidgets.QTableView.mousePressEvent(self, mouse_event)
+
     def contextMenuEvent(self, event):
         # sorted tuple of selected rows; NOTE: duplicate rows are removed with 'set'
         sel_rows = tuple(sorted(set([index.row() for index in self.selectedIndexes()])))
@@ -1183,7 +1187,21 @@ class _WorkoutAreaEditor(_WorkoutArea):
         self.class_table = _WorkoutTableEditor
         self.class_table_data_model = EditableTableModel
         super().__init__(parent, title_text)
-        # self.setStyleSheet("""border: 1px solid black;""")
+        self.setStyleSheet("""
+        _WorkoutAreaEditor {
+            border-radius: 4px;
+            border: 1px solid %s;
+            background-color: %s;
+        }
+        _WorkoutAreaEditor:hover {
+            background-color: %s;
+        }
+        _WorkoutAreaEditor[selected=true] {
+            background-color: %s;
+        }
+        """ % (Colors.CONTAINER.hex, Colors.CONTAINER.hex,
+               Colors.BTTN_HOVER.hex, Colors.SELECTED_CONTAINER.hex))
+        # self.setMouseTracking(True)
         # connect event to slots
         self.toolbar.signal_save_workout.connect(self._save_workout_clicked)
         self.toolbar.signal_load_workout.connect(self._load_workout_clicked)
@@ -1208,7 +1226,7 @@ class _WorkoutAreaEditor(_WorkoutArea):
         workout_data = WorkoutData(workout_name, workout_type_id, workout_rows_data, workout_time)
         # ----- Save new/existing workout
         existing_workout_id = DB().select_from_table('workout', 'id', {'name': workout_name},
-                                                   get_none=True)
+                                                     get_none=True)
         if existing_workout_id:
             _msg = f'Workout "{workout_name}" already exist.\n\n' \
                    f'Do you want to overwrite it?'
@@ -1283,7 +1301,7 @@ class _WorkoutAreaEditor(_WorkoutArea):
                 self.set_workout_from_data(workout_data)
 
     def _table_focused(self, event):
-        get_parent(self, 'week_plan_editor').selected_table = self.table
+        get_parent(self, 'week_plan_editor').set_selected_table(self.table.objectName())
 
     def _table_data_changed(self):
         workout_time = calc_workout_time(self.table.model().exer_exec_rows)
@@ -1415,12 +1433,14 @@ class PlanAreaEditor(_PlanAreaBase):
     def __init__(self, parent):
         super().__init__(parent, _WorkoutAreaEditor)
         self.setObjectName('week_plan_editor')
-        # Data
-        self.selected_table = self.workout_areas[0].table
-        # Connect events to slots
+        # ----- Data -----
+        self.selected_table = None
+        # ----- Connect events to slots -----
         for workout_area in self.workout_areas:
             workout_area.signal_workout_saved.connect(lambda: self.signal_workout_saved.emit())
             workout_area.table.signal_copy_rows.connect(self._copy_rows)
+        # ----- Post init actions -----
+        self.set_selected_table(self.tables[0].objectName())
 
     def add_table_row(self, exer_data, table_name=None):
         # Add row
@@ -1443,10 +1463,18 @@ class PlanAreaEditor(_PlanAreaBase):
         self.tables[0].signal_execise_selected.emit('table_monday', 0)
 
     def set_selected_table(self, table_obj_name):
-        # table_area = getattr(self, table_obj_name.split('_')[1])
-        day_plan = [dp for dp in self.workout_areas if
-                    dp.table.objectName() == table_obj_name][0]
-        self.selected_table = day_plan.table
+        """Sets attr 'selected_table'
+
+        :param table_obj_name <str> Table object name
+        :return <None>
+        """
+        for workout_area in self.workout_areas:
+            if workout_area.table.objectName() == table_obj_name:
+                self.selected_table = workout_area.table
+                set_widget_property(workout_area, 'selected', True)
+            else:
+                workout_area.table.selectionModel().clearSelection()
+                set_widget_property(workout_area, 'selected', False)
 
     def workout_data_set(self, action_name):
         """Check if all workout info is set and if there are any table rows"""
