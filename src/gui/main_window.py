@@ -969,9 +969,11 @@ class _TabArea(QtWidgets.QWidget):
 
 
 class MainWindow(QtWidgets.QMainWindow):
+    """Class for main window - parent of all gui widgets"""
 
     def __init__(self):
         super().__init__()
+        self.setObjectName('main_window')
         self.setWindowIcon(QtGui.QIcon(ImageFp.MOTUS_ICON))
         self.setIconSize(QtCore.QSize(50, 50))
         self.setWindowTitle(APP_NAME)
