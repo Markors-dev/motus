@@ -382,10 +382,8 @@ class RightPane(QtWidgets.QWidget):
         if Settings().getValue('reload_plan') and _last_loaded_plan_id:
             plan_id = _last_loaded_plan_id
         self.plan_editor = PlanEditor(self, plan_id=plan_id)
-        # resize_pane = ResizePane(self)
         self.exer_info_viewer = ExerciseBasicInfoViewer(self)
         resize_pane = ResizePane(self, self.exer_info_viewer, title='Basic exercise info')
-        # resize_pane.set_widget(self.exer_info_viewer)
         self.vbox_layout = QtWidgets.QVBoxLayout(self)
         self.vbox_layout.addWidget(self.plan_editor)
         self.vbox_layout.addWidget(resize_pane)

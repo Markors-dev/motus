@@ -183,3 +183,9 @@ def find_widget_by_attr(widget_iter, attr_name, attr_val, get_none=False):
         raise ValueError(f'Multiple widgets with attr value "{attr_name}"="{attr_val}" '
                          f'found in iterable.')
     return widgets[0]
+
+
+def set_widget_property(widget, prop_name, prop_value):
+    widget.setProperty(prop_name, prop_value)
+    widget.style().unpolish(widget)
+    widget.style().polish(widget)

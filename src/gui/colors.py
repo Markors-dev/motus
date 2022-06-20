@@ -43,6 +43,7 @@ class Colors:
     # ----- Panes -----
     MAIN_WINDOW = Color('#E0E0E0', 'light_grey')
     CONTAINER = Color('#D3D3D3', 'LightGrey')
+    SELECTED_CONTAINER = Color('#90EE90', 'LightGreen')
     # ----- Buttons -----
     BTTN = Color('#99CCFF')
     BTTN_HOVER = Color('#B2FF66')
