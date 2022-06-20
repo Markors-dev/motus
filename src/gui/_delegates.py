@@ -73,8 +73,8 @@ class TableEditorItemDelegate(TableViewerItemDelegate):
         :return <None>
         """
         text = str(index.data())
-        cell_on_reps = index.model().exer_exec_rows[index.row()].on_reps
-        if index.column() == 3 or index.column() == 2 and not cell_on_reps:
+        exer_exec_row = index.model().exer_exec_rows[index.row()]
+        if index.column() == 3 or index.column() == 2 and not exer_exec_row.on_reps:
             assert text.endswith(' min'), 'Cell text should end with " min"!'
             text = text[:text.index(' min')]
         editor.setText(text)

@@ -601,20 +601,20 @@ class EditableTableModel(QAbstractTableModel):
         exer_exec_row = self.exer_exec_rows[index.row()]
         if isinstance(exer_exec_row, SupersetRow):
             if type(exer_exec_row) == SupersetTopRow:
-                return ItemFlag.Enabled
+                return ItemFlag.Enabled | ItemFlag.Selectable
             else:  # == SupersetBottomRow
                 if index.column() in (1, 3):
-                    return ItemFlag.Selectable | ItemFlag.Enabled | ItemFlag.Editable
+                    return ItemFlag.Enabled | ItemFlag.Selectable | ItemFlag.Editable
                 else:
-                    return ItemFlag.Enabled
+                    return ItemFlag.Enabled | ItemFlag.Selectable
         else:  # == ExerciseExecutionRow
             if exer_exec_row.superset_numb:
                 if index.column() in (0, 2):
-                    return ItemFlag.Selectable | ItemFlag.Enabled | ItemFlag.Editable
+                    return ItemFlag.Enabled | ItemFlag.Selectable | ItemFlag.Editable
                 else:
-                    return ItemFlag.Selectable | ItemFlag.Enabled
+                    return ItemFlag.Enabled | ItemFlag.Selectable
             else:
-                return ItemFlag.Selectable | ItemFlag.Enabled | ItemFlag.Editable
+                return ItemFlag.Enabled | ItemFlag.Selectable | ItemFlag.Editable
 
     def rowCount(self, index=None):
         return len(self.exer_exec_rows)
