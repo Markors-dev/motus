@@ -16,7 +16,7 @@ from database.data_model import (
     ExerciseListModel, ExerciseListRow, TableModel,
     EditableTableModel, ExerciseExecutionRow, SupersetRow,
     ExerciseData, WorkoutData, SupersetTopRow, SupersetBottomRow,
-    TableRowType, WorkoutPdfData,
+    WorkoutPdfData,
 )
 
 from gui.widgets import (
@@ -39,7 +39,7 @@ from gui.dialogs import (
     ErrorMessage, InfoMessage, QuestionDialog, get_filepath_from_dialog,
     raise_missing_exercises_error_msg,
 )
-from gui.flags import ImageFp, LayoutOrientation, SizePolicy, Orientation, Key, AlignFlag, MotType
+from gui.flags import ImageFp, LayoutOrientation, SizePolicy, Orientation, Key, AlignFlag, MotType, TableRowType
 from gui.colors import Colors, ThemeType
 from gui.util import get_parent, set_value, get_value, find_widget_by_attr, set_widget_property
 from util import images

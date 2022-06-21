@@ -13,8 +13,7 @@ from reportlab.lib import colors
 
 from config import DAYS_TITLE, DAYS
 from settings import Settings
-from database.data_model import SupersetRow, TableRowType, SupersetTopRow, \
-    SupersetBottomRow
+from database.data_model import SupersetRow, SupersetTopRow, SupersetBottomRow
 from gui.dialogs import ErrorMessage, QuestionDialog
 from gui.colors import Colors
 from gui.flags import ImageFp

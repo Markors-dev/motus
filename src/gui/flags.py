@@ -30,6 +30,12 @@ class MotType(Enum):
     PLAN = 'Plan'
 
 
+class TableRowType(Enum):
+    SS_TOP = 1
+    SS_BOTTOM = 2
+    EXER_EXEC = 3
+
+
 class ImageFp:
     NO_IMAGE = _get_path(IMAGES_DIR, 'no_image.jpg')
     USER = _get_path(IMAGES_DIR, 'user.png')

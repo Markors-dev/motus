@@ -8,9 +8,7 @@ from PyQt5 import QtWidgets
 
 from config import DAYS, PLAN_FILE_EXTENSION, WORKOUT_FILE_EXTENSION
 from settings import Settings
-from database.data_model import (
-    PlanData, SupersetRow, TableRowType, WorkoutData,
-)
+from database.data_model import PlanData, SupersetRow, WorkoutData
 from gui.dialogs import ErrorMessage, QuestionDialog, get_filepath_from_dialog
 
 

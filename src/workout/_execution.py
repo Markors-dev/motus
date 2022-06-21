@@ -2,9 +2,10 @@ import re
 
 from database.data_model import (
     SupersetRow, ExerciseExecutionWorkData, SupersetTopRow, SupersetBottomRow,
-    TableRowType, ExerciseExecutionRow, TableRowType,
+    ExerciseExecutionRow
 )
 from database.db_obj import DB
+from gui.flags import TableRowType
 
 
 # ----- Constants -----

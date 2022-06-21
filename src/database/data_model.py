@@ -10,13 +10,7 @@ from PyQt5 import QtCore
 
 from util import images
 from util.value import convert_to_title_format, wrap_text, pad_text
-from gui.flags import AlignFlag, ItemFlag, ImageFp
-
-
-class TableRowType(Enum):
-    SS_TOP = 1
-    SS_BOTTOM = 2
-    EXER_EXEC = 3
+from gui.flags import AlignFlag, ItemFlag, ImageFp, TableRowType
 
 
 # ----- Methods used in this module -----

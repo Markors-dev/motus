@@ -14,6 +14,7 @@ from settings import Settings
 from util import images
 from util.obj import SingletonDecorator
 from util.value import wrap_text
+from gui.flags import TableRowType
 
 
 @SingletonDecorator
