@@ -16,7 +16,11 @@ from gui.flags import AlignFlag, ItemFlag, ImageFp, TableRowType
 # ----- Methods used in this module -----
 
 def _get_icon_from_bytes(image_bytes):
-    """Returns <QtGui.QIcon> object from image <byte> object"""
+    """Creates and returns icon object from image bytes
+
+    :param image_bytes <bytes> Image bytes
+    :return <QtGui.QIcon>
+    """
     qicon = QtGui.QIcon()
     pixmap = QtGui.QPixmap()
     pixmap.loadFromData(image_bytes)
@@ -49,8 +53,7 @@ class ExerciseData:
 
     def __init__(self, exer_id, name, exer_type, body_part, main_muscle_group, minor_muscle_group,
                  equipment, main_muscle_group_image, minor_muscle_group_image, pos1_image, pos2_image,
-                 instructions, icon_bytes, favorite, link, user_permission,
-                 remove=None, pos1=None, icon_slice=None, edited=None):  # <-- only for editing(maybe not in use)
+                 instructions, icon_bytes, favorite, link, user_permission):
         """ Exercise object
         :param exer_id: <int>
         :param name: <str>
@@ -61,9 +64,12 @@ class ExerciseData:
         :param equipment: <str>
         :param main_muscle_group_image: <bytes>
         :param minor_muscle_group_image: <bytes> or None
-        :param equipment: <str>
         :param pos1_image: <bytes>
         :param pos2_image: <bytes>
+        :param instructions: <str>
+        :param icon_bytes: <bytes>
+        :param link: <str> or <None>
+        :param user_permission: <int>
         """
         # ----- Helper data -----
         self.icon_bytes = icon_bytes
@@ -84,11 +90,6 @@ class ExerciseData:
         self.favorite = True if favorite else False
         self.link = link
         self.user_permission = user_permission
-        # below attrs used only for editing and NOT in normal use
-        self.remove = remove
-        self.pos1 = pos1
-        self.icon_slice = icon_slice
-        self.edited = edited
 
     @classmethod
     def get_empty_exercise_data(cls):
