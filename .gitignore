@@ -14,6 +14,7 @@ test/exports/pdf/*
 *.log
 *_backup.db
 *.snippet
+TODO.txt
 
 
 # Byte-compiled / optimized / DLL files
