@@ -18,6 +18,7 @@ class TableViewerItemDelegate(QtWidgets.QStyledItemDelegate):
     This class was created to change superset rows background color
     and font attributes.
     """
+
     def __init__(self):
         super().__init__()
 
@@ -34,14 +35,19 @@ class TableViewerItemDelegate(QtWidgets.QStyledItemDelegate):
         model = index.model()
         table_row = model.exer_exec_rows[index.row()]
         if isinstance(table_row, SupersetRow):
-            if type(table_row) == SupersetTopRow:
-                bg_brush = QtGui.QBrush(QtGui.QColor(*Colors.SUPERSET_TOP.rgb))
-            else:  # == SupersetBottomRow
-                bg_brush = QtGui.QBrush(QtGui.QColor(*Colors.SUPERSET_BOTTOM.rgb))
-            option.backgroundBrush = bg_brush
             option.font.setPointSize(SupersetRow.POINT_SIZE)
             option.font.setItalic(True)
             option.font.setBold(True)
+            if type(table_row) == SupersetTopRow:
+                rgb_tuple = Colors.SUPERSET_TOP.rgb
+            else:  # == SupersetBottomRow
+                rgb_tuple = Colors.SUPERSET_BOTTOM.rgb
+        else:
+            ss_numb = table_row.superset_numb
+            exer_exec_row_index = index.row() - 2 * ss_numb + 1 if ss_numb else index.row()
+            rgb_tuple = Colors.ROW_ALT.rgb if exer_exec_row_index % 2 == 0 else Colors.ROW.rgb
+        bg_brush = QtGui.QBrush(QtGui.QColor(*rgb_tuple))
+        option.backgroundBrush = bg_brush
 
 
 class TableEditorItemDelegate(TableViewerItemDelegate):
