@@ -1,5 +1,7 @@
 from enum import Enum
 
+from config import BG_OPACITY
+
 
 class ThemeType(Enum):
     LIGHT = 0
@@ -24,6 +26,7 @@ class Color:
     def __init__(self, hex_, desc=None):
         self.hex = hex_
         self.rgb = self._hex_to_rgb()
+        self.rgba = self._rgb_to_rgba()
         self.dec = self._hex_to_decimal()
         self.desc = desc if desc else 'NOT_SET'
 
@@ -31,6 +34,9 @@ class Color:
         hex_stripped = self.hex.lstrip('#')
         assert len(hex_stripped) == 6, 'Color hex value must have length 6.'
         return tuple(int(hex_stripped[i:i + 2], 16) for i in (0, 2, 4))
+
+    def _rgb_to_rgba(self):
+        return self.rgb + (BG_OPACITY, )
 
     def _hex_to_decimal(self):
         return tuple([round((1 / 255 * channel), 4) for channel in self.rgb])
@@ -42,7 +48,8 @@ class Color:
 class Colors:
     # ----- Panes -----
     MAIN_WINDOW = Color('#E0E0E0', 'light_grey')
-    CONTAINER = Color('#D3D3D3', 'LightGrey')
+    CONTAINER_1 = Color('#D3D3D3', 'LightGrey')
+    CONTAINER_2 = Color('#F5F5DC', 'Beige')
     SELECTED_CONTAINER = Color('#90EE90', 'LightGreen')
     # ----- Buttons -----
     BTTN = Color('#99CCFF')

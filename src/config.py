@@ -35,3 +35,5 @@ SETTINGS_FILE = str(Path(DATA_DIR, 'settings.json'))
 # Table data
 DAYS = ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')
 DAYS_TITLE = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+# GUI
+BG_OPACITY = 0.9
