@@ -399,7 +399,7 @@ class RightPane(QtWidgets.QWidget):
         self.exer_info_viewer.set_data(exer_id)
 
 
-class TabPlanner(QtWidgets.QWidget):
+class TabPlanner(QtWidgets.QFrame):
     def __init__(self, parent, index):
         super().__init__(parent)
         self.setObjectName('tab_planner')

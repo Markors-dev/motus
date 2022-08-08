@@ -256,7 +256,7 @@ class WorkoutListViewer(QtWidgets.QWidget):
         self.setLayout(self.vbox_layout)
 
 
-class TabWorkouts(QtWidgets.QWidget):
+class TabWorkouts(QtWidgets.QFrame):
     signal_load_workout_to_planner = QtCore.pyqtSignal(str, WorkoutListRow)
 
     def __init__(self, parent, index):

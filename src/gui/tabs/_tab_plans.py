@@ -193,7 +193,7 @@ class PlanListViewer(QtWidgets.QFrame):
         pass
 
 
-class TabPlans(QtWidgets.QWidget):
+class TabPlans(QtWidgets.QFrame):
     signal_load_plan = QtCore.pyqtSignal(PlanListRow)
     signal_plan_deleted = QtCore.pyqtSignal(int)
 

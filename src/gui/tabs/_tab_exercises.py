@@ -568,7 +568,7 @@ class ExerciseDataEditor(QtWidgets.QWidget):
             self.signal_exercise_deleted.emit(self.exer_id)
 
 
-class TabExercises(QtWidgets.QWidget):
+class TabExercises(QtWidgets.QFrame):
     def __init__(self, parent, index):
         super().__init__(parent)
         self.index = index
