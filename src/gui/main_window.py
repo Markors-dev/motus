@@ -705,6 +705,8 @@ class _TabArea(QtWidgets.QWidget):
     This class holds all tab workspaces within its stacked widget. It manages
     all actions between tabs.
     """
+    signal_open_pdf_folder = QtCore.pyqtSignal()
+    signal_open_motfiles_folder = QtCore.pyqtSignal()
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -780,8 +782,7 @@ class _TabArea(QtWidgets.QWidget):
 
     # ----- SLOTS -----
 
-    @staticmethod
-    def _create_plan_pdf(parent, plan_pdf_data):
+    def _create_plan_pdf(self, parent, plan_pdf_data):
         """Slot for signal 'signal_create_plan_pdf' emit event
 
         :param parent <QtWidgets.QWidget> Widget needed to attach a dialog object
@@ -798,7 +799,8 @@ class _TabArea(QtWidgets.QWidget):
             _export_dir = Settings().getValue('pdf_folderpath')
             _msg = f'Plan "{plan_pdf_data.name}" PDF was created in directory:\n' \
                    f'{_export_dir}'
-            parent.info_dialog = InfoMessage('Plan export to PDF', _msg)
+            bttn_action_dict = {'Open PDF folder': lambda: self.signal_open_pdf_folder.emit()}
+            parent.info_dialog = InfoMessage('Plan export to PDF', _msg, bttn_action_dict=bttn_action_dict)
             parent.info_dialog.exec()
             parent.info_dialog = None
 
@@ -1003,6 +1005,8 @@ class MainWindow(QtWidgets.QMainWindow):
             self.addToolBar(self.toolbar)
         self.tab_widget = _TabArea(self)
         # ----- Connect events to slots -----
+        self.tab_widget.signal_open_pdf_folder.connect(self._open_pdf_folder)
+        self.tab_widget.signal_open_motfiles_folder.connect(self._open_motfiles_folder)
         self.tab_widget.bar.bttn_about.clicked.connect(self._open_about)
         self.tab_widget.bar.bttn_settings.clicked.connect(self._open_settings)
         self.tab_widget.bar.signal_restart.connect(self._restart_app)
