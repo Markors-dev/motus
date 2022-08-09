@@ -147,7 +147,7 @@ class LoadListItemDialog(BaseDialog):
 
 class CrashReportErrorMessage(BaseInfoDialog):
     def __init__(self, title, text, tb_msg, parent_pos=None):
-        bttns = ButtonType.Close | ButtonType.Apply
+        bttns = ButtonType.Close
         _bttn_action_name = 'Send crash report e-mail'
         _bttn_action_dict = {_bttn_action_name: self._send_report}
         super().__init__(title, ImageFp.ERROR, text, bttns,

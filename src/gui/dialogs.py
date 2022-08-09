@@ -62,6 +62,8 @@ class BaseInfoDialog(BaseDialog):
         self.text.setAlignment(AlignFlag.Left | AlignFlag.VCenter)
         self.text.setOpenExternalLinks(True)
         # --- Button box ---
+        if bttn_action_dict:
+            bttns = ButtonType.Apply | bttns
         self.button_box = QtWidgets.QDialogButtonBox(bttns)
         self.button_box.setContentsMargins(100, 20, 10, 5)
         if bttn_action_dict:
@@ -89,14 +91,15 @@ class BaseInfoDialog(BaseDialog):
 class InfoMessage(BaseInfoDialog):
     """Simple info message containing info text and 'Ok' button"""
 
-    def __init__(self, title, text, parent_pos=None):
+    def __init__(self, title, text, bttn_action_dict=None, parent_pos=None):
         """
         :param title <str> Dialog title
         :param text <str> Dialog body text
         :param parent_pos <None> or <QPoint> Position of parent(upper left corner)
         """
         bttns = ButtonType.Ok
-        super().__init__(title, ImageFp.INFO, text, bttns, parent_pos=parent_pos)
+        super().__init__(title, ImageFp.INFO, text, bttns,
+                         bttn_action_dict=bttn_action_dict, parent_pos=parent_pos)
         self.button_box.accepted.connect(self.accept)
 
 
