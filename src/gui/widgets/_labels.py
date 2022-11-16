@@ -55,7 +55,7 @@ class TitleLabel(MyLabel):
         }
         ''' % (*self.PADDING, bg_color, _top_border_radius, _top_border_radius,
                _bottom_border_radius, _bottom_border_radius,
-               bg_color, text_color, Colors.CONTAINER.hex))
+               bg_color, text_color, Colors.CONTAINER_1.hex))
 
 
 class DBTitleLabel(TitleLabel):

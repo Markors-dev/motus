@@ -80,18 +80,11 @@ class ScrollArea(QtWidgets.QScrollArea):
         super().__init__(parent)
         self.setObjectName('scroll_area')
         self.setContentsMargins(0, 0, 0, 0)
-        # self.setStyleSheet("""
-        #     .ScrollArea {
-        #         border: 0px solid black;
-        #         border-radius: 10px;
-        #     }
-        # """)
         # Set size policy
         _hor_size_policy = SizePolicy.EXPANDING if orientation == Orientation.HORIZONTAL else \
             SizePolicy.MINIMUM
         _vert_size_policy = SizePolicy.EXPANDING if orientation == Orientation.VERTICAL else \
             SizePolicy.MINIMUM
-        # self.setSizePolicy(_hor_size_policy, _vert_size_policy)
         self.setSizePolicy(SizePolicy.EXPANDING, SizePolicy.EXPANDING)
         #
         self.setWidgetResizable(True)

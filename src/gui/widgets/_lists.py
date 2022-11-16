@@ -165,9 +165,9 @@ class PlanListView(_ListViewBase):
         super().__init__(parent)
         self.setStyleSheet("""
         PlanListView {
-            background-color: #E5FFCC;
+            background-color: rgb%s;
         }
-        """)
+        """ % str(Colors.CONTAINER_2.rgba))
         self.setIconSize(QtCore.QSize(50, 50))
         self.setSpacing(10)
         self.setUniformItemSizes(True)
