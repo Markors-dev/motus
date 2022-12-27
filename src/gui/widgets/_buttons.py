@@ -160,16 +160,17 @@ class TabWidgetButton(MyToolbutton):
         super().__init__(parent, obj_name, icon_fp, text)
         self.setStyleSheet("""
         TabWidgetButton {
-            margin-top: 10px;
-            padding: 5px;
             border: none;
             border-radius: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding: 10px;
         }
         TabWidgetButton:hover {
-            margin-top: 0px;
-            padding-bottom: 10px;
             border: 1px solid #99CCFF;
             background-color: #99CCFF;
+            padding-top: 5px;
+            padding-bottom: 5px;
         }
         TabWidgetButton:checked {
             border: 1px solid #3399FF;
