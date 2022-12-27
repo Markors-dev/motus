@@ -141,7 +141,7 @@ class WorkoutViewer(QtWidgets.QFrame):
             border: 1px solid %s;
             border-radius: 5px;
         }
-        """ % (Colors.CONTAINER.hex, Colors.CONTAINER.hex))
+        """ % (Colors.CONTAINER_2.hex, Colors.CONTAINER_2.hex))
         # ----- Data -----
         self.loaded_workout_id = None
         # ----- GUI children -----
