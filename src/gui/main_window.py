@@ -672,14 +672,19 @@ class _TabBar(QtWidgets.QWidget):
         self.vbox_layout = QtWidgets.QVBoxLayout(self)
         for bttn in (self.bttn_exercises, self.bttn_planner, self.bttn_workouts, self.bttn_plans):
             self.vbox_layout.addWidget(bttn)
-            self.vbox_layout.setAlignment(bttn, QtCore.Qt.AlignmentFlag.AlignTop)
-            self.vbox_layout.addStretch(1)
-        self.vbox_layout.addStretch(10)
-        for bttn in (self.bttn_options, self.bttn_about, self.bttn_settings, self.bttn_shutdown):
-            self.vbox_layout.addWidget(bttn)
-            self.vbox_layout.setAlignment(bttn, QtCore.Qt.AlignmentFlag.AlignBottom)
-            self.vbox_layout.setAlignment(bttn, QtCore.Qt.AlignmentFlag.AlignCenter)
-            self.vbox_layout.addStretch(1)
+            self.vbox_layout.setAlignment(bttn, AlignFlag.Top | AlignFlag.HCenter)
+        self.vbox_layout.addStretch()
+        # TODO(maybe): implement this in a new class: e.g. 'TabMenuBttn'
+        menu_bttn_addon_stylsheet = """
+            ImageButton {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+        """
+        for menu_bttn in (self.bttn_options, self.bttn_about, self.bttn_settings, self.bttn_shutdown):
+            self.vbox_layout.addWidget(menu_bttn)
+            self.vbox_layout.setAlignment(menu_bttn, AlignFlag.Bottom | AlignFlag.HCenter)
+            menu_bttn.setStyleSheet(menu_bttn.styleSheet() + menu_bttn_addon_stylsheet)
         self.setLayout(self.vbox_layout)
 
     def _tab_bttn_clicked(self, index):
@@ -736,7 +741,7 @@ class _TabArea(QtWidgets.QWidget):
             signal_show_exercise_info.connect(self._show_exercise_info)
         self.tab_planner.right.plan_editor.signal_plans_changed.connect(self._plans_changed)
         self.tab_planner.right.plan_editor.signal_create_plan_pdf.connect(self._create_plan_pdf)
-        self.tab_planner.right.plan_editor.signal_export_plan.connect(self._export_plan)
+        self.tab_planner.right.plan_editor.signal_export_plan.connect(self.export_plan)
         self.tab_planner.right.plan_editor.plan_area.signal_show_exercise_info.\
             connect(self._show_exercise_info)
         self.tab_planner.right.plan_editor.plan_area.signal_workout_saved.\
@@ -753,7 +758,7 @@ class _TabArea(QtWidgets.QWidget):
         self.tab_plans.plan_viewer.plan_area_viewer.signal_show_exercise_info.\
             connect(self._show_exercise_info)
         self.tab_plans.plan_viewer.signal_create_plan_pdf.connect(self._create_plan_pdf)
-        self.tab_plans.plan_viewer.signal_export_plan.connect(self._export_plan)
+        self.tab_plans.plan_viewer.signal_export_plan.connect(self.export_plan)
         self.tab_plans.signal_load_plan.connect(self._load_plan)
 
     def _init_ui(self):
@@ -805,12 +810,12 @@ class _TabArea(QtWidgets.QWidget):
             parent.info_dialog = None
 
     @staticmethod
-    def _export_plan(parent, plan_data):
+    def export_plan(parent, plan_data):
         """Slot for signal 'signal_export_plan' emit event
 
         :param parent <QtWidgets.QWidget> Widget needed to attach a dialog object
                                           onto it(for testing)
-        :param plan_pdf_data <PlanData>
+        :param plan_data <PlanData>
         :return <None>
         """
         exported = export_plan(plan_data)
