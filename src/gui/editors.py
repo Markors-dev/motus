@@ -474,16 +474,16 @@ class ExerciseListViewer(QtWidgets.QFrame):
         self.setFixedWidth(350)
         self.setObjectName('exercise_editor')
         self.setStyleSheet('''
-            .ExerciseListViewer {
-                background-color: %s;
-                border: 1px solid %s;
-                border-radius: 20px;
-            }
-        ''' % (Colors.CONTAINER.hex, Colors.CONTAINER.hex))
-        self.setContentsMargins(5, 5, 5, 5)
+        .ExerciseListViewer {
+            background-color: rgb%s;
+            border: 1px solid %s;
+            border-radius: 20px;
+        }
+        ''' % (str(Colors.CONTAINER_2.rgba), Colors.CONTAINER_1.hex))
         # ----- Data -----
         self.active_filters = None
         # ----- GUI children -----
+        self.vbox_layout = None
         self.resize_pane = None
         self.filter_box = None
         self.exercises_box = None
@@ -496,11 +496,11 @@ class ExerciseListViewer(QtWidgets.QFrame):
         self.filter_box = _FilterBox(self)
         self.resize_pane = ResizePane(self, self.filter_box, title='Filters')
         self.exercises_box = _ExerciseListBox(self)
-        vbox_layout = QtWidgets.QVBoxLayout(self)
-        vbox_layout.setContentsMargins(5, 5, 5, 5)
-        vbox_layout.addWidget(self.resize_pane)
-        vbox_layout.addWidget(self.exercises_box)
-        self.setLayout(vbox_layout)
+        self.vbox_layout = QtWidgets.QVBoxLayout(self)
+        self.vbox_layout.setContentsMargins(10, 10, 10, 10)
+        self.vbox_layout.addWidget(self.resize_pane)
+        self.vbox_layout.addWidget(self.exercises_box)
+        self.setLayout(self.vbox_layout)
 
     def refresh_exercises(self):
         page_selector = self.exercises_box.page_selector
@@ -560,17 +560,17 @@ class _WorkoutTableBase(QtWidgets.QTableView):
         super().__init__(parent)
         self.setMouseTracking(True)
         self.setStyleSheet("""
-            _WorkoutTableBase {
-                border: 1px solid %s;
-                border-radius: 4px;
-            }
-            QHeaderView::section {
-                background-color: %s;
-                border: 1px solid %s;
-                border-radius: 6px;
-            }
-        """ % (Colors.CONTAINER.hex, Colors.TABLE_HEADER.hex,
-               Colors.TABLE_HEADER.hex))
+        _WorkoutTableBase {
+            border: 1px solid %s;
+            background-color: %s;
+        }
+        QHeaderView::section {
+            background-color: %s;
+            border: 1px solid %s;
+            border-radius: 6px;
+        }
+        """ % (Colors.CONTAINER_2.hex, Colors.CONTAINER_2.hex,
+               Colors.TABLE_HEADER.hex, Colors.TABLE_HEADER.hex))
         # ----- Data -----
         _size = Settings().getValue('icon_size')
         self.icon_size = QtCore.QSize(_size[0], _size[1])
@@ -1064,15 +1064,15 @@ class _WorkoutArea(QtWidgets.QFrame):
         # --- Props ---
         self.setObjectName('workout_area')
         self.setFixedWidth(_WorkoutArea.MAX_WIDTH)
-        # self.setMouseTracking(True)
         self.setContentsMargins(10, 0, 10, 0)
+
         self.setStyleSheet("""
         _WorkoutArea {
-            border-radius: 4px;
-            border: 1px solid %s;
             background-color: %s;
+            border: 1px solid %s;
+            border-radius: 10px;
         }
-        """ % (Colors.CONTAINER.hex, Colors.CONTAINER.hex))
+        """ % (Colors.CONTAINER_2.hex, Colors.CONTAINER_2.hex))
         # Initialize UI
         self.init_ui(title_text)
         # Connect events to slots
@@ -1187,21 +1187,14 @@ class _WorkoutAreaEditor(_WorkoutArea):
         self.class_table = _WorkoutTableEditor
         self.class_table_data_model = EditableTableModel
         super().__init__(parent, title_text)
-        self.setStyleSheet("""
-        _WorkoutAreaEditor {
-            border-radius: 4px;
-            border: 1px solid %s;
-            background-color: %s;
-        }
+        self.setStyleSheet(self.styleSheet() + """
         _WorkoutAreaEditor:hover {
-            background-color: %s;
+            border: 5px solid %s;
         }
         _WorkoutAreaEditor[selected=true] {
-            background-color: %s;
+            border: 5px solid %s;
         }
-        """ % (Colors.CONTAINER.hex, Colors.CONTAINER.hex,
-               Colors.BTTN_HOVER.hex, Colors.SELECTED_CONTAINER.hex))
-        # self.setMouseTracking(True)
+        """ % (Colors.BTTN_HOVER.hex, Colors.SELECTED_CONTAINER.hex))
         # connect event to slots
         self.toolbar.signal_save_workout.connect(self._save_workout_clicked)
         self.toolbar.signal_load_workout.connect(self._load_workout_clicked)
@@ -1852,7 +1845,7 @@ class ExerciseBasicInfoViewer(QtWidgets.QFrame):
                 border: 1px solid %s;
                 border-radius: 10px;
             }
-        ''' % (Colors.CONTAINER.hex, Colors.CONTAINER.hex))
+        ''' % (Colors.CONTAINER_1.hex, Colors.CONTAINER_1.hex))
         # Data
         self.exercise_data = ExerciseData.get_empty_exercise_data()
         # GUI children
@@ -1909,7 +1902,7 @@ class _AdditionalInfoRow(QtWidgets.QFrame):
                 border: 1px solid %s;
                 border-radius: 10px;
             }
-        ''' % (Colors.CONTAINER.hex, Colors.CONTAINER.hex))
+        ''' % (Colors.CONTAINER_1.hex, Colors.CONTAINER_1.hex))
         self.setSizePolicy(SizePolicy.EXPANDING, SizePolicy.EXPANDING)
         self.hbox_layout = None
         self.instructions = None
