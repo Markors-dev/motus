@@ -63,6 +63,7 @@ class Colors:
     ROW_ALT = Color('#E6FFE6')
     SUPERSET_TOP = Color('#FFEFD5', 'light blue')
     SUPERSET_BOTTOM = Color('#FFDAB9', 'light blue')
+    ROW_HOVER = Color('#99FF99', 'light green')
     # ----- Titles -----
     TITLE = Color('#009999', 'greenish')
     PLAN_TITLE = Color('#4169E1', 'Dark Cyan')

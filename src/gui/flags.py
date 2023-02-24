@@ -171,3 +171,5 @@ class ItemFlag:
     Selectable = QtCore.Qt.ItemFlag.ItemIsSelectable
     Enabled = QtCore.Qt.ItemFlag.ItemIsEnabled
     Editable = QtCore.Qt.ItemFlag.ItemIsEditable
+    DragEnabled = QtCore.Qt.ItemFlag.ItemIsDragEnabled
+    DropEnabled = QtCore.Qt.ItemFlag.ItemIsDropEnabled
