@@ -316,7 +316,7 @@ class ExerciseListModel(QAbstractListModel):
         return len(self.rows)
 
     def flags(self, index):
-        return ItemFlag.Selectable | ItemFlag.Enabled | ItemFlag.Editable
+        return ItemFlag.Selectable | ItemFlag.Enabled | ItemFlag.Editable | ItemFlag.DragEnabled
 
 
 class PlanListModel(QAbstractListModel):
@@ -596,20 +596,22 @@ class EditableTableModel(QAbstractTableModel):
         exer_exec_row = self.exer_exec_rows[index.row()]
         if isinstance(exer_exec_row, SupersetRow):
             if type(exer_exec_row) == SupersetTopRow:
-                return ItemFlag.Enabled | ItemFlag.Selectable
+                _item_flag = ItemFlag.Enabled | ItemFlag.Selectable
             else:  # == SupersetBottomRow
                 if index.column() in (1, 3):
-                    return ItemFlag.Enabled | ItemFlag.Selectable | ItemFlag.Editable
+                    _item_flag = ItemFlag.Enabled | ItemFlag.Selectable | ItemFlag.Editable
                 else:
-                    return ItemFlag.Enabled | ItemFlag.Selectable
+                    _item_flag = ItemFlag.Enabled | ItemFlag.Selectable
         else:  # == ExerciseExecutionRow
             if exer_exec_row.superset_numb:
                 if index.column() in (0, 2):
-                    return ItemFlag.Enabled | ItemFlag.Selectable | ItemFlag.Editable
+                    _item_flag = ItemFlag.Enabled | ItemFlag.Selectable | ItemFlag.Editable
                 else:
-                    return ItemFlag.Enabled | ItemFlag.Selectable
+                    _item_flag = ItemFlag.Enabled | ItemFlag.Selectable
             else:
-                return ItemFlag.Enabled | ItemFlag.Selectable | ItemFlag.Editable
+                _item_flag = ItemFlag.Enabled | ItemFlag.Selectable | ItemFlag.Editable
+        _item_flag |= ItemFlag.DropEnabled
+        return _item_flag
 
     def rowCount(self, index=None):
         return len(self.exer_exec_rows)
